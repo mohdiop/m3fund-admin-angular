@@ -4,17 +4,51 @@
         <div class="login-text">Connexion Admin</div>
         <div class="login-form">
             <form>
+                <div class="input-label">Nom d'utilisateur</div>
                 <div class="input-icon">
                     <i class="ri-user-3-line"></i>
-                    <input type="text" placeholder="Entrez votre email ou téléphone" required>
+                    <input type="text" placeholder="Entrez votre email ou téléphone" autocomplete="email tel-national" required>
                 </div>
+                <div style="height: 20px;"></div>
+                <div class="input-label">Mot de passe</div>
                 <div class="input-icon">
                     <i class="ri-lock-2-line"></i>
-                    <input id="password" type="password" placeholder="Entrez votre mot de passe" required>
-                    <i class="ri-eye-off-line"></i>
+                    <input [class.expand]="!showPassword" class="password" [type]="showPassword? 'text': 'password'" placeholder="Entrez votre mot de passe" required>
+                    <i class="toggle-eye" [class.ri-eye-line]="showPassword" [class.ri-eye-off-line]="!showPassword" (click)="togglePassword()"></i>
                 </div>
+                <div class="forgot-password">Mot de passe oublié?</div>
+                <button type="submit" class="submit-button" (submit)="login()">Se connecter</button>
             </form>
         </div>
     </div>
-    <div class="right-container"></div>
+    <div class="right-container">
+        <img class="bdi" src="bdi.png" alt="M3Fund. Bénévolat, Don et Investissement.">
+        <div class="carousel-container">
+            <div
+                class="carousel-slide"
+                [style.transform]="'translateX(-' + currentIndex * 100 + '%);'"
+            >
+                @for (card of cards; track card.title) {
+                <div class="slide">
+                    <img [src]="card.image" alt="{{ card.title }}" class="info-icon" />
+                    <h3 class="info-title">{{ card.title }}</h3>
+                    <p class="info-text">{{ card.text }}</p>
+                </div>
+                }
+            </div>
+
+            <div class="pagination-dots">
+                @for (card of cards; let i = $index; track i) {
+                <span
+                    class="dot"
+                    [class.active]="cards.indexOf(card) === currentIndex"
+                    (click)="goToSlide(cards.indexOf(card))"
+                ></span>
+                }
+            </div>
+        </div>
+
+        <img class="man-picture" src="man.png" alt="A man 3D picture.">
+        <img class="woman-picture" src="woman.png" alt="A woman 3D picture.">
+    </div>
 </div>
