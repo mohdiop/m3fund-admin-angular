@@ -1,15 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ResponseError, TokenPair } from '../../models/interfaces';
 
 @Component({
   selector: 'app-login',
   imports: [
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   templateUrl: './login.html',
   styleUrl: './login.css',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class Login implements OnInit, OnDestroy {
   _isAuthenticated = false;
@@ -36,8 +38,16 @@ export class Login implements OnInit, OnDestroy {
 
   currentIndex = 0;
   intervalId: any;
+  _isLoading = false;
+  errorOccured = false;
+  erroText = "";
 
-  constructor(private router: Router, private authenticationService: AuthService, private formBuilder: FormBuilder) {
+  constructor(
+    private router: Router, 
+    private authenticationService: AuthService, 
+    private formBuilder: FormBuilder, 
+    private cdr: ChangeDetectorRef,
+) {
     const isAuthenticatedString = localStorage.getItem('isAuthenticated')
     this._isAuthenticated = isAuthenticatedString === 'true';
   }
@@ -57,14 +67,17 @@ export class Login implements OnInit, OnDestroy {
   
   ngOnDestroy(): void {
     clearInterval(this.intervalId);
+    this.cdr.detach();
   }
 
   nextSlide() {
     this.currentIndex = (this.currentIndex + 1) % this.cards.length;
+    this.cdr.detectChanges()
   }
 
   goToSlide(index: number) {
     this.currentIndex = index;
+    this.cdr.detectChanges()
   }
 
   togglePassword() {
@@ -73,18 +86,39 @@ export class Login implements OnInit, OnDestroy {
 
   login() {
     if(this.loginForm.valid) {
+      this._isLoading = true;
+      this.cdr.detectChanges()
       this.authenticationService.login(
-        this.loginForm.get('username')?.value,
-        this.loginForm.get('password')?.value
+        {
+          email: (this.loginForm.get('username')?.value as string).trim(),
+          password: (this.loginForm.get('password')?.value as string).trim(),
+          platform: "WEB_ADMIN"
+        }
       ).subscribe({
-        next: (response) => {
-          console.log(response)
+        next: (response: TokenPair) => {
+          localStorage.setItem("accessToken", response.accessToken)
+          localStorage.setItem("refreshToken", response.refreshToken)
+          localStorage.setItem("isAuthenticated", "true")
+          this.router.navigateByUrl("/home")
+          this._isLoading = false;
+          this.cdr.detectChanges()
         },
-        error: (error) => {
-          console.log(error)
+        error: (error: ResponseError) => {
+          this._isLoading = false;
+          this.errorOccured = true;
+          this.erroText = error.message;
+          this.cdr.detectChanges()
+          setTimeout(()=>{
+            this.errorOccured = false;
+            this.cdr.detectChanges();
+          }, 5000)
         }
       })
     }
+  }
+
+  get isDisabled(): boolean {
+    return this._isLoading;
   }
   
 }

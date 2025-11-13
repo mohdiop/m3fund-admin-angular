@@ -17,7 +17,16 @@
                     <i class="toggle-eye" [class.ri-eye-line]="showPassword" [class.ri-eye-off-line]="!showPassword" (click)="togglePassword()"></i>
                 </div>
                 <div class="forgot-password">Mot de passe oublié?</div>
-                <button type="submit" class="submit-button">Se connecter</button>
+                @if(errorOccured) {
+                    <p style="color: red; font-size: 0.7em; justify-self: center;">{{ erroText }}</p>
+                }
+                <button type="submit" class="submit-button" [disabled]="isDisabled">
+                    @if(isDisabled) {
+                        Chargement ...
+                    } @else {
+                        Se connecter
+                    }
+                </button>
             </form>
         </div>
     </div>
@@ -26,7 +35,7 @@
         <div class="carousel-container">
             <div
                 class="carousel-slide"
-                [style.transform]="'translateX(-' + currentIndex * 100 + '%);'"
+                [style.transform]="'translateX(-' + (currentIndex * 100) + '%);'"
             >
                 @for (card of cards; let i=$index; track card.title) {
                 <div class="slide">

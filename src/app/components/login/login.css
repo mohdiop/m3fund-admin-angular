@@ -129,6 +129,7 @@
   margin-top: 10px;
   cursor: pointer;
   margin-right: 10px;
+  margin-bottom: 25px;
   transition: color 0.25s ease;
 }
 
@@ -146,9 +147,21 @@
   border-radius: 10px;
   font-size: 1em;
   font-weight: 500;
-  margin-top: 25px;
   transition: all 0.3s ease;
   animation: fadeInUp 1.4s ease-out both;
+}
+
+.submit-button:disabled {
+    background-color: #f4f4f4;
+    color: rgba(0, 0, 0, 0.6);
+    cursor: progress;
+}
+
+.submit-button:disabled:hover {
+    background-color: #f4f4f4;
+    color: rgba(0, 0, 0, 0.6);
+    box-shadow: none;
+    cursor: progress;
 }
 
 .submit-button:hover {
@@ -157,7 +170,6 @@
   cursor: pointer;
 }
 
-/* ===== DROITE : VISUEL ===== */
 .right-container {
   background: #2d2d2d;
   display: flex;
