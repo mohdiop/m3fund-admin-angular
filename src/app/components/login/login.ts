@@ -17,6 +17,7 @@ export class Login implements OnInit, OnDestroy {
   _isAuthenticated = false;
   showPassword = false;
   loginForm!: FormGroup;
+  submitted = false;
 
   cards = [
     {
@@ -85,6 +86,7 @@ export class Login implements OnInit, OnDestroy {
   }
 
   login() {
+    this.submitted = true;
     if(this.loginForm.valid) {
       this._isLoading = true;
       this.cdr.detectChanges()

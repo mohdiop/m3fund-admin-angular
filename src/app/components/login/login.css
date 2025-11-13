@@ -138,6 +138,15 @@
   text-decoration: underline;
 }
 
+.error-message {
+  color: #d9534f; 
+  font-size: 0.8em;
+  margin-top: 5px;
+  padding-left: 4px;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+
 .submit-button {
   background-color: #06A664;
   color: #fff;
