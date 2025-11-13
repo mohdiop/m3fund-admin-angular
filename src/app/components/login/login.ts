@@ -1,9 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth-service';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
   imports: [
+    ReactiveFormsModule,
   ],
   templateUrl: './login.html',
   styleUrl: './login.css',
@@ -11,6 +14,7 @@ import { Router } from '@angular/router';
 export class Login implements OnInit, OnDestroy {
   _isAuthenticated = false;
   showPassword = false;
+  loginForm!: FormGroup;
 
   cards = [
     {
@@ -33,7 +37,7 @@ export class Login implements OnInit, OnDestroy {
   currentIndex = 0;
   intervalId: any;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private authenticationService: AuthService, private formBuilder: FormBuilder) {
     const isAuthenticatedString = localStorage.getItem('isAuthenticated')
     this._isAuthenticated = isAuthenticatedString === 'true';
   }
@@ -45,6 +49,10 @@ export class Login implements OnInit, OnDestroy {
     if (this._isAuthenticated) {
       this.router.navigateByUrl("/home")
     }
+    this.loginForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+    });
   }
   
   ngOnDestroy(): void {
@@ -64,7 +72,19 @@ export class Login implements OnInit, OnDestroy {
   }
 
   login() {
-
+    if(this.loginForm.valid) {
+      this.authenticationService.login(
+        this.loginForm.get('username')?.value,
+        this.loginForm.get('password')?.value
+      ).subscribe({
+        next: (response) => {
+          console.log(response)
+        },
+        error: (error) => {
+          console.log(error)
+        }
+      })
+    }
   }
   
 }
