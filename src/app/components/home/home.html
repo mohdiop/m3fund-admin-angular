@@ -1,1 +1,90 @@
-<p>Home Screen</p>
+@if(showLogoutDialog) {
+    <div 
+    class="dialog-overlay" 
+    (click)="closeDialog()"
+>
+    <div class="dialog-container" (click)="$event.stopPropagation()">
+        <div class="dialog-title">Déconnexion</div>
+        <div class="dialog-text">Voulez-vous vraiment vous déconnecter ?</div>
+
+        <div class="dialog-actions">
+            <button class="cancel" (click)="closeDialog()">Annuler</button>
+            <button class="confirm" (click)="logout()">Se déconnecter</button>
+        </div>
+    </div>
+</div>
+}
+
+<div class="principal-container">
+    <div class="left-container">
+        <div class="nav-bar">
+            <div class="logo-container">
+                <img class="logo" src="logoName.png" alt="Logo M3Fund.">
+            </div>
+            <div class="menus-container">
+                <div class="menus-menu">
+                    <div class="menu-text">
+                        MENU
+                    </div>
+                    @for (menu of menuMenus; track $index; let i = $index) {
+                        <div class="menu-item" [class.not-selected]="selectedMenu !== i" (click)="selectMenu(i)">
+                            @if (selectedMenu === i) {
+                                <div class="selected-menu"></div>
+                            }
+                            <i class="{{ selectedMenu === i ? menu.selectedIcon : menu.icon}}" [class.selected]="selectedMenu === i"></i>
+                            <div class="menu-title" [class.selected]="selectedMenu === i">{{menu.title}}</div>
+                        </div>
+                    }
+                    <div style="height: 10px;"></div>
+                    <div class="menu-text">
+                        GENERAL
+                    </div>
+                    @for (menu of generalMenus; track $index; let i = $index) {
+                        <div class="menu-item" [class.not-selected]="selectedMenu !== i+6" (click)="selectMenu(i+6)">
+                            @if (selectedMenu === i+6) {
+                                <div class="selected-menu"></div>
+                            }
+                            <i class="{{ selectedMenu === i+6 ? menu.selectedIcon : menu.icon}}" [class.selected]="selectedMenu === i+6"></i>
+                            <div class="menu-title" [class.selected]="selectedMenu === i+6">{{menu.title}}</div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="copyright">
+                © 2025 M3Fund
+            </div>
+        </div>
+    </div>
+    <div class="right-container">
+        <div class="top-status">
+            <div class="greeting-text">
+                Bonjour, {{userInfo?.lastName}}
+            </div>
+            <div class="search-bar">
+                <i class="ri-search-line"></i>
+                <input 
+                    type="text"
+                    placeholder="Rechercher un projet ..."
+                    required
+                >
+            </div>
+            <div class="names-container">
+                <div class="notif-container">
+                    <i class="ri-notification-2-line"></i>
+                </div>
+                <div class="profile-picture">
+                    {{userInfo?.firstName?.at(0)}}{{userInfo?.lastName?.at(0)}}
+                </div>
+                <div class="names-email-container">
+                    <div class="user-names">
+                        {{userInfo?.firstName}} {{userInfo?.lastName}}
+                    </div>
+                    <div class="user-email">
+                        {{userInfo?.email}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-container"></div>
+    </div>
+</div>

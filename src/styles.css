@@ -7,3 +7,17 @@ body {
     overflow-x: hidden;
     font-family: 'Inter';
 }
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear,
+input[type="password"]::-webkit-credentials-auto-fill-button,
+input[type="password"]::-webkit-textfield-decoration-container,
+input[type="password"]::-webkit-clear-button,
+input[type="password"]::-webkit-inner-spin-button {
+  display: none;
+  appearance: none;
+}
+
+input[type="password"] {
+  -webkit-text-security: disc;
+}

@@ -26,4 +26,10 @@ export class AuthService {
         })
       );
   }
+
+  logout() {
+    localStorage.removeItem("accessToken")
+    localStorage.removeItem("refreshToken")
+    localStorage.setItem("isAuthenticated", "false")
+  }
 }

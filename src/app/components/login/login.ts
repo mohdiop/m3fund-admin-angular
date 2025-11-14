@@ -41,7 +41,7 @@ export class Login implements OnInit, OnDestroy {
   intervalId: any;
   _isLoading = false;
   errorOccured = false;
-  erroText = "";
+  errorText = "";
 
   constructor(
     private router: Router, 
@@ -108,7 +108,7 @@ export class Login implements OnInit, OnDestroy {
         error: (error: ResponseError) => {
           this._isLoading = false;
           this.errorOccured = true;
-          this.erroText = error.message;
+          this.errorText = error.message;
           this.cdr.detectChanges()
           setTimeout(()=>{
             this.errorOccured = false;

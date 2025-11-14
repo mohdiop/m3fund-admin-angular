@@ -163,14 +163,14 @@
 .submit-button:disabled {
     background-color: #f4f4f4;
     color: rgba(0, 0, 0, 0.6);
-    cursor: progress;
+    cursor: wait;
 }
 
 .submit-button:disabled:hover {
     background-color: #f4f4f4;
     color: rgba(0, 0, 0, 0.6);
     box-shadow: none;
-    cursor: progress;
+    cursor: wait;
 }
 
 .submit-button:hover {
