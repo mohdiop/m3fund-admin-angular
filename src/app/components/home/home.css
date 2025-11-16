@@ -20,7 +20,7 @@ i {
     min-width: 200px;
     border-radius: 10px;
     display: grid;
-    grid-template-rows: 20% 70% 10%;
+    grid-template-rows: 15% 75% 10%;
     box-sizing: border-box;
 }
 
@@ -41,13 +41,13 @@ i {
     color: rgba(0, 0, 0, 0.6);
     padding-left: 25px;
     font-weight: bold;
-    font-size: 0.85em;
+    font-size: 0.7em;
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
 .menu-title {
-    font-size: 0.9em;
+    font-size: 0.8em;
     color: #001C10;
     opacity: 0.4;
 }
@@ -93,13 +93,14 @@ i {
 
 .copyright {
     width: 100%;
+    height: 100%;
     display: flex;
-    position: relative;
     flex-direction: column;
     justify-content: end;
     align-items: center;
-    padding-top: 30px;
     font-size: 0.8em;
+    box-sizing: border-box;
+    padding-bottom: 20px;
     color: rgba(0, 0, 0, 0.6);
 }
 
@@ -143,7 +144,7 @@ i {
 .search-bar {
     background-color: #f4f4f4;
     width: 370px;
-    height: 48px;
+    height: 42px;
     display: flex;
     gap: 10px;
     padding-left: 10px;
@@ -163,13 +164,15 @@ i {
 
 .profile-picture {
     background-color: #2d2d2d;
-    width: 48px;
-    height: 48px;
+    width: 42px;
+    height: 42px;
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
     border-radius: 100px;
+    font-size: 1em;
+    cursor: pointer;
 }
 
 .names-email-container {
@@ -184,13 +187,27 @@ i {
 }
 
 .notif-container {
-    width: 48px; 
-    height: 48px; 
+    width: 42px; 
+    height: 42px; 
     background-color: #f4f4f4; 
     border-radius: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+}
+
+.notif-container i {
+    transition: color 0.25s ease;
+}
+
+.notif-container:hover {
+    background-color: #06A664;
+}
+
+.notif-container:hover i {
+    color: white;
 }
 
 .main-container {

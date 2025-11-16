@@ -1,0 +1,373 @@
+.principal-container {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 10% 90%;
+    gap: 10px;
+    box-sizing: border-box;
+}
+
+.top-container{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    box-sizing: border-box;
+    grid-template-columns: 80% 20%;
+}
+
+.dashboard-texts {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    box-sizing: border-box;
+}
+
+.dashboard-text {
+    font-size: 1.2em;
+}
+
+.cheat-text {
+    font-size: 0.9em;
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.refresh-area {
+    width: 120px;
+    height: 38px;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    justify-self: end;
+    transition: background-color 0.25s ease;
+}
+
+.refresh-area i {
+    font-size: 24px;
+    color: rgba(0, 0, 0, 0.6);
+    transition: color 0.25s ease;
+}
+
+.refresh-area div {
+    font-size: 0.8em;
+    color: rgba(0, 0, 0, 0.6);
+    transition: color 0.25s ease;
+}
+
+.refresh-area:hover {
+    background-color: #06A664;
+}
+
+.refresh-area:hover i,
+.refresh-area:hover div {
+    color: white;
+}
+
+.bottom-container {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 5% 95%;
+    padding-bottom: 10px;
+    gap: 10px;
+    box-sizing: border-box;
+}
+
+.current-date {
+    font-size: 0.9em;
+    width: 100%;
+    height: 100%;
+}
+
+.stats-container {
+    width: 100%;
+    height: 100%;
+    gap: 10px;
+    padding-right: 10px;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    box-sizing: border-box;
+}
+
+.left-container {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 40% 60%;
+    gap: 10px;
+    padding-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.left-top-container {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    gap: 10px;
+    padding-right: 10px;
+    box-sizing: border-box;
+}
+
+.stats-card {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 25% 50% 25%;
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.stats-card:hover,
+.payments-stats-card:hover {
+    background-color: #06A664;
+    color: white;
+    border: 1px solid #06A664;
+}
+
+.stats-card:hover .go-to,
+.payments-stats-card:hover .go-to {
+    background-color: #2d2d2d;
+}
+
+.stats-card:hover .monthly-adds,
+.payments-stats-card:hover .monthly-adds {
+    border: 1px solid #fff;
+}
+
+.stats-card:hover .monthly-adds-value,
+.payments-stats-card:hover .monthly-adds-value {
+    color: white;
+}
+
+.stats-card:hover .monthly-adds i,
+.payments-stats-card:hover .monthly-adds i {
+    color: white;
+}
+
+.stats-card:hover .monthly-adds .monthly-adds-value,
+.payments-stats-card:hover .monthly-adds .monthly-adds-value {
+    color: white;
+}
+
+.card-top {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+}
+
+.card-title {
+    opacity: 0.4;
+}
+
+.stats-card:hover .card-top .card-title {
+    opacity: 0.8;
+}
+
+.card-center {
+    font-size: 3em;
+    display: flex;
+    align-items: center;
+}
+
+.go-to {
+    width: 32px;
+    height: 32px;
+    background-color: #f4f4f4;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-self: end;
+}
+
+.go-to i {
+    font-size: 24px;
+}
+
+.card-bottom {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.monthly-adds {
+    display: flex;
+    flex-direction: row;
+    height: fit-content;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #06A664;
+    padding-left: 7px;
+    gap: 2px;
+    border-radius: 5px;
+}
+
+.monthly-adds.bad {
+    border: 1px solid red;
+}
+
+.monthly-adds-value {
+    color: #06A664;
+    font-size: 0.9em;
+}
+
+.monthly-adds.bad .monthly-adds-value {
+    color: red;
+}
+
+.monthly-adds.bad i {
+    color: red;
+}
+
+.monthly-adds i {
+    font-size: 24px;
+    color: #06A664;
+}
+
+.monthly-adds-text {
+    font-size: 0.8em;
+    display: flex;
+    align-items: center;
+}
+
+.left-bottom-container {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding-bottom: 10px;
+}
+
+.right-container {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 20% 80%;
+    box-sizing: border-box;
+}
+
+.right-top-container {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 49% 2% 49%;
+    box-sizing: border-box;
+}
+
+.right-top-item-r,
+.right-top-item-l {
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 42px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.right-top-item-r:hover,
+.right-top-item-l:hover {
+    background-color: #d9d9d9;
+}
+
+.right-top-item-r.selected,
+.right-top-item-l.selected {
+    background-color: #2d2d2d;
+    color: white;
+}
+
+.right-top-item-r {
+    border-radius: 10px 0px 0px 10px;
+}
+
+.right-top-item-l {
+    border-radius: 0px 10px 10px 0px;
+}
+
+.projects-bar-chart-title {
+    font-size: 0.8em;
+    color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-self: center;
+    align-items: center;
+    max-width: 300px;
+    text-align: center;
+}
+
+.projects-bar-chart {
+    width: 100%;
+}
+
+.payments-stats-card {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 90% 10%;
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.payments-stats-container {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 40% 40% 20%;
+}
+
+.payments-stats-container .monthly-adds-text {
+    font-size: 0.8em;
+}
+
+.fcfa {
+    color: rgba(0, 0, 0, 0.6);
+    font-weight: normal;
+}
+
+.payments-stats-card:hover .fcfa {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.fund-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    box-sizing: border-box;
+}
+
+.fund-title {
+    font-size: 0.9em;
+    opacity: 0.4;
+}
+
+.payments-stats-card:hover .fund-title {
+    opacity: 0.8;
+}
+
+.fund-value {
+    font-size: 1.7em;
+    word-spacing: 0.1em;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+}

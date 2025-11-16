@@ -1,0 +1,150 @@
+<div class="principal-container">
+    <div class="top-container">
+        <div class="dashboard-texts">
+            <div class="dashboard-text">
+                Dashboard
+            </div>
+            <div class="cheat-text">
+                Tout commence par une idée, un coup de pouce est le moteur de certaines réussites.
+            </div>
+        </div>
+        <div class="refresh-area" (click)="refreshPage()">
+            <div>
+                Rafraîchir
+            </div>
+            <i class="ri-refresh-line"></i>
+        </div>
+    </div>
+    @if (isLoading) {
+        <div class="loading-zone">
+            <div class="spinner-dots">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <p>Chargement</p>
+        </div>
+    } @else {
+        <div class="bottom-container">
+            <div class="current-date">
+                {{ (currentDate | date:"EEEE, 'le' d MMMM yyyy")?.replace((currentDate | date:"EEEE, 'le' d MMMM yyyy")?.charAt(0) ?? "", (currentDate | date:"EEEE, 'le' d MMMM yyyy")?.charAt(0)?.toUpperCase() ?? "") }}
+            </div>
+            <div class="stats-container">
+                <div class="left-container">
+                    <div class="left-top-container">
+                        <div class="stats-card" (click)="goToPage('/home/users')">
+                            <div class="card-top">
+                                <div class="card-title">
+                                    Total d'utilisateurs actifs
+                                </div>
+                                <div class="go-to">
+                                    <i class="ri-arrow-right-up-line"></i>
+                                </div>
+                            </div>
+                            <div class="card-center">
+                                {{ stats?.totalActiveUsers }}
+                            </div>
+                            <div class="card-bottom">
+                                <div class="monthly-adds" [class.bad]="!isGreaterOrEqualTo(stats?.usersCurrentMonthScore, stats?.usersLastMonthScore)">
+                                    <div class="monthly-adds-value">
+                                        {{ stats?.monthlyNewUsers }}
+                                    </div>
+                                    <i [class]="isGreaterOrEqualTo(stats?.usersCurrentMonthScore, stats?.usersLastMonthScore) ? 'ri-arrow-drop-up-fill' : 'ri-arrow-drop-down-fill'"></i>
+                                </div>
+                                <div class="monthly-adds-text">
+                                    Nouveaux utilisateurs ce mois
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stats-card" (click)="goToPage('/home/projects')">
+                            <div class="card-top">
+                                <div class="card-title">
+                                    Total de projets actifs
+                                </div>
+                                <div class="go-to">
+                                    <i class="ri-arrow-right-up-line"></i>
+                                </div>
+                            </div>
+                            <div class="card-center">
+                                {{ stats?.totalActiveProjects }}
+                            </div>
+                            <div class="card-bottom">
+                                <div class="monthly-adds" [class.bad]="!isGreaterOrEqualTo(stats?.projectsCurrentMonthScore, stats?.projectsLastMonthScore)">
+                                    <div class="monthly-adds-value">
+                                        {{ stats?.monthlyNewProjects }}
+                                    </div>
+                                    <i [class]="isGreaterOrEqualTo(stats?.projectsCurrentMonthScore, stats?.projectsLastMonthScore) ? 'ri-arrow-drop-up-fill' : 'ri-arrow-drop-down-fill'"></i>
+                                </div>
+                                <div class="monthly-adds-text">
+                                    Nouveaux projets ce mois
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="left-bottom-container">
+                        <div class="payments-stats-card" (click)="goToPage('/home/payments')">
+                            <div class="payments-stats-container">
+                                <div class="fund-container">
+                                    <div class="fund-title">
+                                        Fond actuel
+                                    </div>
+                                    <div class="fund-value">
+                                        {{ stats?.actualFund | numberSpaces }} <span class="fcfa">FCFA</span>
+                                    </div>
+                                </div>
+                                <div class="fund-container">
+                                    <div class="fund-title">
+                                        Total levé sur la plateforme
+                                    </div>
+                                    <div class="fund-value">
+                                        {{ stats?.totalFund | numberSpaces }} <span class="fcfa">FCFA</span>
+                                    </div>
+                                </div>
+                                <div class="card-bottom">
+                                    <div class="monthly-adds" [class.bad]="false">
+                                        <div class="monthly-adds-value">
+                                            1 200 000 FCFA
+                                        </div>
+                                        <i [class]="true ? 'ri-arrow-drop-up-fill' : 'ri-arrow-drop-down-fill'"></i>
+                                    </div>
+                                    <div class="monthly-adds-text">
+                                        Levés ce mois
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="go-to">
+                                <i class="ri-arrow-right-up-line"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="right-container">
+                    <div class="right-top-container">
+                        <div class="right-top-item-r" [class.selected]="selectedGraph === 0" (click)="selectGraph(0)">Projets/Utilisateurs</div>
+                        <div></div>
+                        <div class="right-top-item-l" [class.selected]="selectedGraph === 1" (click)="selectGraph(1)">Paiments</div>
+                    </div>
+                    @if(selectedGraph === 0) {
+                        <div class="right-item">
+                            <div class="projects-bar-chart-title">
+                                Graphe d’évolution du nombre de projets/utilisateurs créés par mois (5 derniers mois)
+                            </div>
+                            <div class="projects-bar-chart">
+                                <canvas baseChart
+                                        [data]="barChartData"
+                                        [options]="barChartOptions"
+                                        [type]="'bar'">
+                                </canvas>
+                            </div>
+                        </div>
+                    } @else {
+                        <div>
+                            Payments graph
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

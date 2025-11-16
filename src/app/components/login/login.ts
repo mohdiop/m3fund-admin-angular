@@ -92,7 +92,7 @@ export class Login implements OnInit, OnDestroy {
       this.cdr.detectChanges()
       this.authenticationService.login(
         {
-          email: (this.loginForm.get('username')?.value as string).trim(),
+          username: (this.loginForm.get('username')?.value as string).trim(),
           password: (this.loginForm.get('password')?.value as string).trim(),
           platform: "WEB_ADMIN"
         }

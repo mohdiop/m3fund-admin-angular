@@ -1,20 +1,22 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { AdminResponse, ResponseError } from '../../models/interfaces';
 import { UserService } from '../../services/user-service';
 import { AuthService } from '../../services/auth-service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  imports: [RouterOutlet],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
-export class Home implements OnInit {
+export class Home implements OnInit, OnDestroy {
   _isAuthenticated = false;
   userInfo: AdminResponse|null = null
   selectedMenu = 0
   showLogoutDialog = false;
+  private sub!: Subscription;
 
   menuMenus = [
     {
@@ -90,6 +92,50 @@ export class Home implements OnInit {
           console.log(error.message)
         }
       })
+    this.selectMenu(this.selectedMenu)
+    this.sub = this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        switch(event.urlAfterRedirects) {
+          case "/home/dashboard": {
+            this.selectedMenu = 0;
+            break;
+          }
+          case "/home/users": {
+            this.selectedMenu = 1;
+            break;
+          }
+          case "/home/administrators": {
+            this.selectedMenu = 2;
+            break;
+          }
+          case "/home/projects": {
+            this.selectedMenu = 3;
+            break;
+          }
+          case "/home/payments": {
+            this.selectedMenu = 4;
+            break;
+          }
+          case "/home/histories": {
+            this.selectedMenu = 5;
+            break;
+          }
+          case "/home/settings": {
+            this.selectedMenu = 6;
+            break;
+          }
+          case "/home/help": {
+            this.selectedMenu = 7;
+            break;
+          }
+          default: this.selectedMenu = 0;
+        }
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe()
   }
 
   selectMenu(i: number) {
@@ -98,6 +144,44 @@ export class Home implements OnInit {
     } else {
       this.selectedMenu = i;
       this.cdr.detectChanges()
+      switch(i) {
+        case 0: {
+          this.router.navigateByUrl("/home/dashboard")
+          break;
+        }
+        case 1: {
+          this.router.navigateByUrl("/home/users")
+          break
+        }
+        case 2: {
+          this.router.navigateByUrl("/home/administrators")
+          break
+        }
+        case 3: {
+          this.router.navigateByUrl("/home/projects")
+          break
+        }
+        case 4: {
+          this.router.navigateByUrl("/home/payments")
+          break
+        }
+        case 5: {
+          this.router.navigateByUrl("/home/histories")
+          break
+        }
+        case 6: {
+          this.router.navigateByUrl("/home/settings")
+          break
+        }
+        case 7: {
+          this.router.navigateByUrl("/home/help")
+          break
+        }
+        default: {
+          this.router.navigateByUrl("/home")
+          break
+        }
+      }
     }
   }
 

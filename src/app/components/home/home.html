@@ -17,42 +17,40 @@
 
 <div class="principal-container">
     <div class="left-container">
-        <div class="nav-bar">
-            <div class="logo-container">
-                <img class="logo" src="logoName.png" alt="Logo M3Fund.">
-            </div>
-            <div class="menus-container">
-                <div class="menus-menu">
-                    <div class="menu-text">
-                        MENU
-                    </div>
-                    @for (menu of menuMenus; track $index; let i = $index) {
-                        <div class="menu-item" [class.not-selected]="selectedMenu !== i" (click)="selectMenu(i)">
-                            @if (selectedMenu === i) {
-                                <div class="selected-menu"></div>
-                            }
-                            <i class="{{ selectedMenu === i ? menu.selectedIcon : menu.icon}}" [class.selected]="selectedMenu === i"></i>
-                            <div class="menu-title" [class.selected]="selectedMenu === i">{{menu.title}}</div>
-                        </div>
-                    }
-                    <div style="height: 10px;"></div>
-                    <div class="menu-text">
-                        GENERAL
-                    </div>
-                    @for (menu of generalMenus; track $index; let i = $index) {
-                        <div class="menu-item" [class.not-selected]="selectedMenu !== i+6" (click)="selectMenu(i+6)">
-                            @if (selectedMenu === i+6) {
-                                <div class="selected-menu"></div>
-                            }
-                            <i class="{{ selectedMenu === i+6 ? menu.selectedIcon : menu.icon}}" [class.selected]="selectedMenu === i+6"></i>
-                            <div class="menu-title" [class.selected]="selectedMenu === i+6">{{menu.title}}</div>
-                        </div>
-                    }
+        <div class="logo-container">
+            <img class="logo" src="logoName.png" alt="Logo M3Fund.">
+        </div>
+        <div class="menus-container">
+            <div class="menus-menu">
+                <div class="menu-text">
+                    MENU
                 </div>
+                @for (menu of menuMenus; track $index; let i = $index) {
+                    <div class="menu-item" [class.not-selected]="selectedMenu !== i" (click)="selectMenu(i)">
+                        @if (selectedMenu === i) {
+                            <div class="selected-menu"></div>
+                        }
+                        <i class="{{ selectedMenu === i ? menu.selectedIcon : menu.icon}}" [class.selected]="selectedMenu === i"></i>
+                        <div class="menu-title" [class.selected]="selectedMenu === i">{{menu.title}}</div>
+                    </div>
+                }
+                <div style="height: 10px;"></div>
+                <div class="menu-text">
+                    GENERAL
+                </div>
+                @for (menu of generalMenus; track $index; let i = $index) {
+                    <div class="menu-item" [class.not-selected]="selectedMenu !== i+6" (click)="selectMenu(i+6)">
+                        @if (selectedMenu === i+6) {
+                            <div class="selected-menu"></div>
+                        }
+                        <i class="{{ selectedMenu === i+6 ? menu.selectedIcon : menu.icon}}" [class.selected]="selectedMenu === i+6"></i>
+                        <div class="menu-title" [class.selected]="selectedMenu === i+6">{{menu.title}}</div>
+                    </div>
+                }
             </div>
-            <div class="copyright">
-                © 2025 M3Fund
-            </div>
+        </div>
+        <div class="copyright">
+            © 2025 M3Fund - v1.0.0
         </div>
     </div>
     <div class="right-container">
@@ -85,6 +83,8 @@
                 </div>
             </div>
         </div>
-        <div class="main-container"></div>
+        <div class="main-container">
+            <router-outlet></router-outlet>
+        </div>
     </div>
 </div>
