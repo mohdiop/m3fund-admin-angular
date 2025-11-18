@@ -39,6 +39,7 @@ export interface Payment {
   madeAt: string;
   amount: number;
   projectName: string;
+  strategy: "CASHED" | "DISBURSED";
 }
 
 export interface Project {

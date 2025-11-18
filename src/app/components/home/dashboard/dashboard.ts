@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { StatsService } from '../../../services/stats-service';
-import { AdminDashBoardResponse, ResponseError } from '../../../models/interfaces';
+import { AdminDashBoardResponse, Payment, ResponseError } from '../../../models/interfaces';
 import { DatePipe } from '@angular/common';
 import { Router } from "@angular/router";
 import { ChartOptions, ChartData, Chart } from 'chart.js';
@@ -45,7 +45,9 @@ export class Dashboard implements OnInit, OnDestroy {
   isLoading = false;
   currentDate = Date.now()
   selectedGraph = 0
-  paymentChartData: { labels: string[] , data: number[] } | undefined
+  cashedPaymentsChartData: { labels: string[] , data: number[] } | undefined
+  disbursedPaymentsChartData: { labels: string[] , data: number[] } | undefined
+  totalPaymentsChartData: { labels: string[] , data: number[] } | undefined
   paymentChartType: "daily" | "monthly" | "yearly" = "daily"
   paymentChartArea: "cashed" | "disbursed" | "total" = "total"
   paymentChartTypeControl = new FormControl(this.paymentChartType);
@@ -120,7 +122,7 @@ export class Dashboard implements OnInit, OnDestroy {
             }
           ],
         }
-        this.updatePaymentsOptions(this.paymentChartType)
+        this.updatePaymentsOptions(this.paymentChartArea, this.paymentChartType)
       },
       error: (error: ResponseError) => {
         console.log(error.message)
@@ -136,7 +138,7 @@ export class Dashboard implements OnInit, OnDestroy {
         case 'yearly': {this.paymentChartType = 'yearly'; break;}
         default: {this.paymentChartType = "daily"; break;}
       }
-      this.updatePaymentsOptions(this.paymentChartType)
+      this.updatePaymentsOptions(this.paymentChartArea, this.paymentChartType)
     });
   }
 
@@ -172,15 +174,91 @@ export class Dashboard implements OnInit, OnDestroy {
   }
 
   selectPaymentArea(area: "cashed" | "disbursed" | "total") {
+    this.updatePaymentsOptions(area, this.paymentChartType);
     this.paymentChartArea = area;
     this.cdr.detectChanges()
   }
 
-  updatePaymentsOptions(type: "daily" | "monthly" | "yearly") {
+  updatePaymentsOptions(strategy: "cashed" | "disbursed" | "total" ,type: "daily" | "monthly" | "yearly") {
     if(this.stats?.payments === undefined) {
       return;
     }
-    this.paymentChartData = aggregatePaymentsByMode(this.stats?.payments, type)
+    const paymentsCashed: Payment[] = this.stats?.payments.filter((value) => value.strategy === "CASHED")
+    const paymentsDisbursed: Payment[] = this.stats?.payments.filter((value) => value.strategy === "DISBURSED")
+    this.cashedPaymentsChartData = aggregatePaymentsByMode(paymentsCashed, type)
+    this.disbursedPaymentsChartData = aggregatePaymentsByMode(paymentsDisbursed, type)
+    this.totalPaymentsChartData = aggregatePaymentsByMode(this.stats?.payments, type)
+    var series: any[] = []
+    switch(strategy) {
+      case 'cashed': {
+        series = [{
+        data: this.cashedPaymentsChartData.data,
+        type: 'line',
+        smooth: true,
+        showSymbol: false,         
+        symbol: 'circle',
+        symbolSize: 10,
+        lineStyle: {
+          width: 4,
+          color: '#06A664'
+        },
+        itemStyle: {
+          color: '#06A664'
+        }
+      }]
+     break; 
+      }
+      case 'disbursed': {
+        series = [{
+        data: this.disbursedPaymentsChartData.data,
+        type: 'line',
+        smooth: true,
+        showSymbol: false,         
+        symbol: 'circle',
+        symbolSize: 10,
+        lineStyle: {
+          width: 4,
+          color: '#E6B800'
+        },
+        itemStyle: {
+          color: '#E6B800'
+        }
+      } ]
+      break
+      }
+      case 'total': {
+        series = [{
+        data: this.cashedPaymentsChartData.data,
+        type: 'line',
+        smooth: true,
+        showSymbol: false,         
+        symbol: 'circle',
+        symbolSize: 10,
+        lineStyle: {
+          width: 4,
+          color: '#06A664'
+        },
+        itemStyle: {
+          color: '#06A664'
+        }
+      }, {
+        data: this.disbursedPaymentsChartData.data,
+        type: 'line',
+        smooth: true,
+        showSymbol: false,         
+        symbol: 'circle',
+        symbolSize: 10,
+        lineStyle: {
+          width: 4,
+          color: '#E6B800'
+        },
+        itemStyle: {
+          color: '#E6B800'
+        }
+      } ]
+      break;
+      }
+    }
     this.options = {
       legend: { show: false },
       tooltip: {
@@ -195,7 +273,7 @@ export class Dashboard implements OnInit, OnDestroy {
 
       xAxis: {
         type: 'category',
-        data: this.paymentChartData.labels,
+        data: this.totalPaymentsChartData.labels,
         axisLine: { lineStyle: { color: '#2d2d2d' } },
         axisTick: { show: false },
         splitLine: { show: true }
@@ -220,21 +298,7 @@ export class Dashboard implements OnInit, OnDestroy {
         }
       },
 
-      series: [{
-        data: this.paymentChartData.data,
-        type: 'line',
-        smooth: true,
-        showSymbol: false,         
-        symbol: 'circle',
-        symbolSize: 10,
-        lineStyle: {
-          width: 4,
-          color: '#06A664'
-        },
-        itemStyle: {
-          color: '#E6B800'
-        }
-      }],
+      series: series,
 
       grid: { left: 0, right: 0, bottom: 0, top: 0 }
     };

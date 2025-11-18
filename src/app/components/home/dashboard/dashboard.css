@@ -387,7 +387,7 @@
 
 .payments-chart-area {
     width: 100%;
-    height: 100%;
+    height: calc(100% - 5px); 
     display: grid;
     grid-template-rows: 15% 15% 70% ;
     padding: 10px;
@@ -431,7 +431,7 @@
 
 .payments-chart-center {
     width: 70%;
-    height: 80%;
+    height: 32px;
     display: grid;
     background-color: #f4f4f4;
     grid-template-columns: repeat(3, 1fr);
