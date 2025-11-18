@@ -6,8 +6,8 @@ import { Payment, Project, SimpleUserResponse } from "../models/interfaces";
  */
 export function getLastFiveMonths(): string[] {
   const months = [
-    "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
-    "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
+    "Janv.", "Févr.", "Mars", "Avr.", "Mai", "Juin",
+    "Juil.", "Août", "Sept.", "Oct.", "Nov.", "Déc."
   ];
 
   const now = new Date();

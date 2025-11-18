@@ -121,7 +121,7 @@
                 </div>
                 <div class="right-container">
                     <div class="right-top-container">
-                        <div class="right-top-item-r" [class.selected]="selectedGraph === 0" (click)="selectGraph(0)">Projets/Utilisateurs</div>
+                        <div class="right-top-item-r" [class.selected]="selectedGraph === 0" (click)="selectGraph(0)">Projets / Utilisateurs</div>
                         <div></div>
                         <div class="right-top-item-l" [class.selected]="selectedGraph === 1" (click)="selectGraph(1)">Paiments</div>
                     </div>
@@ -139,7 +139,26 @@
                             </div>
                         </div>
                     } @else {
-                        <div echarts [options]="options" class="payments-chart"></div>
+                        <div class="payments-chart-area">
+                            <div class="payments-chart-top">
+                                <div class="payments-chart-title">Transaction @switch (paymentChartTypeControl.value) {
+                                    @case ("daily") { journalière }
+                                    @case ("monthly") { mensuelle }
+                                    @case ("yearly") { annuelle }
+                                    }</div>
+                                <select name="cars" id="cars" [value]="paymentChartType" class="payments-type" [formControl]="paymentChartTypeControl">
+                                    <option value="daily">journalière</option>
+                                    <option value="monthly">mensuelle</option>
+                                    <option value="yearly">annuelle</option>
+                                </select>
+                            </div>
+                            <div class="payments-chart-center">
+                                <div class="payments-chart-type" [class.selected]="paymentChartArea === 'total'" (click)="selectPaymentArea('total')">Total</div>
+                                <div class="payments-chart-type" [class.selected]="paymentChartArea === 'cashed'" (click)="selectPaymentArea('cashed')">Encaissés</div>
+                                <div class="payments-chart-type" [class.selected]="paymentChartArea === 'disbursed'" (click)="selectPaymentArea('disbursed')">Décaissés</div>
+                            </div>
+                            <div echarts [options]="options" class="payments-chart"></div>
+                        </div>
                     }
                 </div>
             </div>

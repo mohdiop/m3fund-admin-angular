@@ -13,15 +13,17 @@ import { LineChart } from 'echarts/charts';
 import {
   GridComponent,
   TooltipComponent,
-  LegendComponent
+  LegendComponent,
+  MarkAreaComponent
 } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 echarts.use([
   LineChart,
   GridComponent,
   TooltipComponent,
   LegendComponent,
-  CanvasRenderer
+  CanvasRenderer,
 ]);
 
 @Component({
@@ -30,7 +32,8 @@ echarts.use([
     DatePipe,
     BaseChartDirective,
     NumberSpacesPipe,
-    NgxEchartsDirective
+    NgxEchartsDirective,
+    ReactiveFormsModule
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
@@ -43,6 +46,9 @@ export class Dashboard implements OnInit, OnDestroy {
   currentDate = Date.now()
   selectedGraph = 0
   paymentChartData: { labels: string[] , data: number[] } | undefined
+  paymentChartType: "daily" | "monthly" | "yearly" = "daily"
+  paymentChartArea: "cashed" | "disbursed" | "total" = "total"
+  paymentChartTypeControl = new FormControl(this.paymentChartType);
 
   barChartOptions: ChartOptions = {
     responsive: true,
@@ -114,71 +120,23 @@ export class Dashboard implements OnInit, OnDestroy {
             }
           ],
         }
-        this.paymentChartData = aggregatePaymentsByMode(this.stats.payments, "daily")
-        this.options = {
-          tooltip: {
-            trigger: 'axis',           
-            backgroundColor: '#2d2d2d',
-            borderRadius: 10,
-            borderWidth: 1,
-            textStyle: {
-              color: '#fff'
-            }
-          },
-
-          xAxis: {
-            type: 'category',
-            data: this.paymentChartData.labels,
-            axisLine: { lineStyle: { color: '#2d2d2d' } },
-            axisTick: { show: false },
-            splitLine: { show: true }
-          },
-
-          yAxis: {
-            type: 'value',
-            min: 0,
-            axisLine: { show: true },
-            axisTick: { show: true },
-            splitLine: { show: false },
-            axisLabel: {
-              formatter: (value: number) => {
-                if (value >= 1_000_000) {
-                  return (value / 1_000_000).toFixed(1).replace('.', ',') + 'M';
-                } 
-                if (value >= 1_000) {
-                  return (value / 1_000).toFixed(1).replace('.', ',') + 'k';
-                }
-                return value.toString();
-              }
-            }
-          },
-
-          series: [{
-            data: this.paymentChartData.data,
-            type: 'line',
-            smooth: true,
-            showSymbol: true,         
-            symbol: 'circle',
-            symbolSize: 8,
-            lineStyle: {
-              width: 4,
-              color: '#06A664'
-            },
-            itemStyle: {
-              color: '#2d2d2d'         
-            }
-          }],
-
-          grid: { left: 40, right: 20, bottom: 40, top: 20 }
-        };
-
-        this.cdr.detectChanges()
+        this.updatePaymentsOptions(this.paymentChartType)
       },
       error: (error: ResponseError) => {
         console.log(error.message)
         this.isLoading = false;
         this.cdr.detectChanges()
       }
+    });
+    this.paymentChartTypeControl.valueChanges.subscribe((value) => {
+      console.log(value)
+      switch(value) {
+        case 'daily': {this.paymentChartType = 'daily'; break;}
+        case 'monthly': {this.paymentChartType = 'monthly'; break;}
+        case 'yearly': {this.paymentChartType = 'yearly'; break;}
+        default: {this.paymentChartType = "daily"; break;}
+      }
+      this.updatePaymentsOptions(this.paymentChartType)
     });
   }
 
@@ -193,7 +151,7 @@ export class Dashboard implements OnInit, OnDestroy {
   ) {}
 
   isGreaterOrEqualTo(first: number | undefined, second: number | undefined): boolean {
-    if(first && second) {
+    if(first !== undefined && second !== undefined) {
       return first >= second
     } else {
       return false
@@ -212,4 +170,74 @@ export class Dashboard implements OnInit, OnDestroy {
     this.selectedGraph = i;
     this.cdr.detectChanges()
   }
+
+  selectPaymentArea(area: "cashed" | "disbursed" | "total") {
+    this.paymentChartArea = area;
+    this.cdr.detectChanges()
+  }
+
+  updatePaymentsOptions(type: "daily" | "monthly" | "yearly") {
+    if(this.stats?.payments === undefined) {
+      return;
+    }
+    this.paymentChartData = aggregatePaymentsByMode(this.stats?.payments, type)
+    this.options = {
+      legend: { show: false },
+      tooltip: {
+        trigger: 'axis',           
+        backgroundColor: '#2d2d2d',
+        borderRadius: 10,
+        borderWidth: 1,
+        textStyle: {
+          color: '#fff'
+        }
+      },
+
+      xAxis: {
+        type: 'category',
+        data: this.paymentChartData.labels,
+        axisLine: { lineStyle: { color: '#2d2d2d' } },
+        axisTick: { show: false },
+        splitLine: { show: true }
+      },
+
+      yAxis: {
+        type: 'value',
+        min: 0,
+        axisLine: { show: true },
+        axisTick: { show: true },
+        splitLine: { show: false },
+        axisLabel: {
+          formatter: (value: number) => {
+            if (value >= 1_000_000) {
+              return (value / 1_000_000).toFixed(1).replace('.', ',') + 'M';
+            } 
+            if (value >= 1_000) {
+              return (value / 1_000).toFixed(1).replace('.', ',') + 'k';
+            }
+            return value.toString();
+          }
+        }
+      },
+
+      series: [{
+        data: this.paymentChartData.data,
+        type: 'line',
+        smooth: true,
+        showSymbol: false,         
+        symbol: 'circle',
+        symbolSize: 10,
+        lineStyle: {
+          width: 4,
+          color: '#06A664'
+        },
+        itemStyle: {
+          color: '#E6B800'
+        }
+      }],
+
+      grid: { left: 0, right: 0, bottom: 0, top: 0 }
+    };
+    this.cdr.detectChanges()
+}
 }
