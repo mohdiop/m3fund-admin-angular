@@ -5,7 +5,7 @@ import { DatePipe } from '@angular/common';
 import { Router } from "@angular/router";
 import { ChartOptions, ChartData, Chart } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
-import { aggregatePaymentsByMode, getDailySplitLastMonthFR, getLastFiveMonths, getMonthlySplitFR, getProjectsCountLastFiveMonths, getUsersCountLastFiveMonths, getYearlySplitFR } from '../../../utilities/utilities';
+import { aggregatePaymentsByMode, getLastFiveMonths, getProjectsCountLastFiveMonths, getUsersCountLastFiveMonths } from '../../../utilities/utilities';
 import { NumberSpacesPipe } from '../../../pipes/number-spaces-pipe-pipe';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
 import * as echarts from 'echarts/core';
@@ -14,7 +14,6 @@ import {
   GridComponent,
   TooltipComponent,
   LegendComponent,
-  MarkAreaComponent
 } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -303,5 +302,5 @@ export class Dashboard implements OnInit, OnDestroy {
       grid: { left: 0, right: 0, bottom: 0, top: 0 }
     };
     this.cdr.detectChanges()
-}
+  }
 }

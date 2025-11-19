@@ -27,8 +27,16 @@ export interface AdminResponse {
 }
 
 export interface SimpleUserResponse {
-  id: number,
-  createdAt: string
+  id: number;
+  state: "ACTIVE" | "INACTIVE" | "SUSPENDED";
+  roles: ["ROLE_PROJECT_OWNER" |
+    "ROLE_CONTRIBUTOR" |
+    "ROLE_SUPER_ADMIN" |
+    "ROLE_VALIDATIONS_ADMIN" |
+    "ROLE_PAYMENTS_ADMIN" |
+    "ROLE_USERS_ADMIN" |
+    "ROLE_SYSTEM"]
+  createdAt: string;
 }
 
 export interface Payment {
@@ -82,4 +90,26 @@ export interface AdminDashBoardResponse {
   payments: Payment[];
   projects: Project[];
   users: SimpleUserResponse[];
+}
+
+export interface RoleDistribution {
+  owners: number;
+  contributors: number;
+  admins: number;
+}
+
+export interface SimpleOwnerResponse {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  type: "INDIVIDUAL" | "ASSOCIATION" | "ORGANIZATION";
+  profilePicture?: string;
+}
+
+export interface ValidationRequestResponse {
+  id: number;
+  owner: SimpleOwnerResponse;
+  date: string;
+  state: "PENDING" | "APPROVED" | "REFUSED"
 }

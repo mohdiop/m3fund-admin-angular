@@ -1,4 +1,4 @@
-import { Payment, Project, SimpleUserResponse } from "../models/interfaces";
+import { Payment, Project, RoleDistribution, SimpleUserResponse } from "../models/interfaces";
 
 /**
  * Retourne les 5 derniers mois (du plus ancien au mois courant).
@@ -189,4 +189,78 @@ export function aggregatePaymentsByMode(
     labels,
     data: labels.map(l => sums[l])
   };
+}
+
+/**
+ * Retourne la répartition en pourcentage des porteurs,
+ * contributeurs et admins dans la liste des utilisateurs.
+ */
+export function getRoleDistribution(users: SimpleUserResponse[] | undefined): RoleDistribution {
+
+  if(users === undefined) {
+    return {
+      owners: 0,
+      contributors: 0,
+      admins: 0
+    }
+  }
+  let owners = 0;
+  let contributors = 0;
+  let admins = 0;
+
+  for (const user of users) {
+    const { roles } = user;
+
+    if (roles.includes("ROLE_PROJECT_OWNER")) {
+      owners++;
+      continue;
+    }
+
+    if (roles.includes("ROLE_CONTRIBUTOR")) {
+      contributors++;
+      continue;
+    }
+
+    // Tous les autres rôles = admin
+    admins++;
+  }
+
+  const total = users.length || 1;
+
+  return {
+    owners: Math.round((owners / total) * 100),
+    contributors: Math.round((contributors / total) * 100),
+    admins: Math.round((admins / total) * 100),
+  };
+}
+
+export function getRoleCount(users: SimpleUserResponse[] | undefined, role: "contributors" | "owners" | "admins"): number {
+  if(users === undefined) return 0;
+  let owners = 0;
+  let contributors = 0;
+  let admins = 0;
+
+  for (const user of users) {
+    const { roles } = user;
+
+    if (roles.includes("ROLE_PROJECT_OWNER")) {
+      owners++;
+      continue;
+    }
+
+    if (roles.includes("ROLE_CONTRIBUTOR")) {
+      contributors++;
+      continue;
+    }
+
+    // Tous les autres rôles = admin
+    admins++;
+  }
+  
+  switch(role) {
+    case "contributors": return contributors;
+    case "owners": return owners;
+    case "admins": return admins;
+    default: return 0; 
+  }
 }

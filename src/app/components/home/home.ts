@@ -201,4 +201,8 @@ export class Home implements OnInit, OnDestroy {
     this.router.navigateByUrl("/login")
     this.cdr.detectChanges()
   }
+
+  public goToPage(path: string) {
+    this.router.navigateByUrl(path)
+  }
 }

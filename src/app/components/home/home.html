@@ -58,7 +58,7 @@
             <div class="greeting-text">
                 Bonjour, {{userInfo?.lastName}}
             </div>
-            <div class="search-bar">
+            <div class="search-bar" (keypress)="goToPage('/home/projects')">
                 <i class="ri-search-line"></i>
                 <input 
                     type="text"

@@ -2,9 +2,10 @@
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-rows: 10% 90%;
+    grid-template-rows: 7% 93%;
     gap: 10px;
     box-sizing: border-box;
+    padding-bottom: 15px;
 }
 
 .top-container{
@@ -18,8 +19,7 @@
 .dashboard-texts {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 5px;
+    justify-content: space-evenly;
     box-sizing: border-box;
 }
 
@@ -28,7 +28,7 @@
 }
 
 .cheat-text {
-    font-size: 0.9em;
+    font-size: 0.8em;
     color: rgba(0, 0, 0, 0.4);
 }
 
@@ -79,9 +79,11 @@
 }
 
 .current-date {
-    font-size: 0.9em;
+    font-size: 0.8em;
     width: 100%;
     height: 100%;
+    display: flex;
+    align-items: center;
 }
 
 .stats-container {
@@ -100,7 +102,6 @@
     display: grid;
     grid-template-rows: 40% 60%;
     gap: 5px;
-    padding-bottom: 10px;
     box-sizing: border-box;
 }
 
@@ -111,7 +112,6 @@
     grid-template-columns: 50% 50%;
     gap: 5px;
     padding-right: 5px;
-    padding-bottom:5px;
     box-sizing: border-box;
 }
 
@@ -258,7 +258,7 @@
     height: 100%;
     display: grid;
     grid-template-rows: 15% 85%;
-    padding-bottom: 10px;
+    gap: 5px;
     box-sizing: border-box;
 }
 
@@ -379,7 +379,7 @@
 }
 
 .fund-value {
-    font-size: 1.7em;
+    font-size: 2em;
     word-spacing: 0.1em;
     letter-spacing: 0.05em;
     font-weight: 500;
@@ -461,4 +461,9 @@
 .payments-chart-type.selected {
     background-color: #2d2d2d;
     color: white;
+}
+
+.monthly-adds i {
+    font-size: 16px;
+    padding: 4px;
 }
