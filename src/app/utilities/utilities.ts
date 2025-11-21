@@ -264,3 +264,16 @@ export function getRoleCount(users: SimpleUserResponse[] | undefined, role: "con
     default: return 0; 
   }
 }
+
+export function getExtensionFromBlob(blob: Blob): string {
+  const mime = blob.type; // ex: "image/png"
+
+  if (!mime) return "UNKNOWN";
+
+  // Récupère tout ce qui est après le "/" → png, jpeg, pdf...
+  const ext = mime.split("/")[1];
+
+  if (!ext) return "UNKNOWN";
+
+  return ext.toUpperCase(); // → "PNG"
+}

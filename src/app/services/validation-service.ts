@@ -36,6 +36,7 @@ export class ValidationService {
     });
     return this.http.post(
       url,
+      {},
       {headers: headers}
     ).pipe(
         catchError((error: HttpErrorResponse) => {
@@ -53,6 +54,7 @@ export class ValidationService {
     });
     return this.http.post(
       url,
+      {},
       {headers: headers}
     ).pipe(
         catchError((error: HttpErrorResponse) => {

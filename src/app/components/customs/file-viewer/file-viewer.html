@@ -1,0 +1,17 @@
+<div class="preview-container">
+
+  <button class="close-btn" (click)="close()">
+    <i class="ri-close-line"></i>
+  </button>
+
+  @if (isPdf()) {
+    <pdf-viewer 
+      [src]="url"
+      style="width:100%; height:100%;"
+      [render-text]="true">
+    </pdf-viewer>
+  } @else {
+    <img [src]="url" alt="Preview" class="image-preview"/>
+  }
+
+</div>

@@ -1,0 +1,152 @@
+
+@if (showFileViewer) {
+    <app-file-viewer
+        (closed)="hideFile()"
+        [url]="fileToViewUrl"
+        class="dialog-overlay"
+        [type]="fileToViewType"
+        onscroll="$event.stopPropagation()"
+    >
+    </app-file-viewer>
+}
+
+<div class="principal-container">
+    <div class="title">Informations sur le porteur</div>
+    <div class="bottom-container">
+        <div class="informations-container">
+            <div class="left-container">
+                @if (owner?.type === 'INDIVIDUAL'){
+                    <div class="firstname">
+                        <div class="info-card" style="width: 250px;">
+                            <i class="ri-user-3-fill"></i>
+                            <div class="info">
+                                <div class="info-title">Prénom</div>
+                                <div class="info-content">{{ owner?.firstName }}</div>
+                            </div>
+                        </div>
+                        <div class="info-card" style="width: 165px;">
+                            <div class="info">
+                                <div class="info-title">Nom</div>
+                                <div class="info-content">{{ owner?.lastName }}</div>
+                            </div>
+                        </div>
+                    </div>
+                } @else { 
+                    <div class="info-card">
+                        <i class="ri-user-3-fill"></i>
+                        <div class="info">
+                            <div class="info-title">Nom de l'entité</div>
+                            <div class="info-content">{{ owner?.entityName }}</div>
+                        </div>
+                    </div>
+                }
+                <div class="info-card">
+                    <i class="ri-mail-fill"></i>
+                    <div class="info">
+                        <div class="info-title">Email</div>
+                        <div class="info-content">{{ owner?.email }}</div>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <i class="ri-phone-fill"></i>
+                    <div class="info">
+                        <div class="info-title">Téléphone</div>
+                        <div class="info-content">{{ owner?.phone }}</div>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <i class="ri-map-pin-fill"></i>
+                    <div class="info">
+                        <div class="info-title">Adresse</div>
+                        <div class="info-content">{{ owner?.address }}</div>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <i class="ri-cash-fill"></i>
+                    <div class="info">
+                        <div class="info-title">Revenue annuelle</div>
+                        <div class="info-content">{{ owner?.annualIncome | numberSpaces }} FCFA</div>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <i class="ri-shield-user-fill"></i>
+                    <div class="info">
+                        <div class="info-title">Type</div>
+                        <div class="info-content">{{ owner?.type | ownerType }}</div>
+                    </div>
+                </div>
+                @if(owner?.type !== 'INDIVIDUAL') {
+                    <div class="info-card">
+                        <i class="ri-coin-fill"></i>
+                        <div class="info">
+                            <div class="info-title">Capital social</div>
+                            <div class="info-content">{{ owner?.shareCapital | numberSpaces}} FCFA</div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="right-container">
+                <div class="profile-container">
+                    <img [src]="profileImageUrl? profileImageUrl : 'noImage.png'" alt="Photo ou logo du porteur" width="150px" height="150px" [class.clickable]="profileImageUrl">
+                </div>
+                <div class="docs-container">
+                    @if(owner?.biometricCardUrl) {
+                        <div class="doc" (click)="showFile(biometricCardUrl!, biometricCardFileType)">
+                            <div class="doc-top">
+                                <i class="ri-id-card-fill"></i>
+                                <div class="info-title">Carte biométrique</div>
+                            </div>
+                            <div class="doc-type">{{ biometricCardFileType }}</div>
+                            <i class="ri-eye-2-line eye"></i>
+                        </div>
+                    }
+                    @if(owner?.residenceCertificateUrl) {
+                        <div class="doc" (click)="showFile(residenceCertificateUrl!, residenceCertificateFileType)">
+                            <div class="doc-top">
+                                <i class="ri-community-fill"></i>
+                                <div class="info-title">Certificat de résidence</div>
+                            </div>
+                            <div class="doc-type">{{ residenceCertificateFileType }}</div>
+                            <i class="ri-eye-2-line eye"></i>
+                        </div>
+                    }
+                    @if(owner?.bankStatementUrl) {
+                        <div class="doc" (click)="showFile(bankStatementUrl!, bankStatementFileType)">
+                            <div class="doc-top">
+                                <i class="ri-bank-card-fill"></i>
+                                <div class="info-title">Rélévé bancaire</div>
+                            </div>
+                            <div class="doc-type">{{ bankStatementFileType }}</div>
+                            <i class="ri-eye-2-line eye"></i>
+                        </div>
+                    }
+                    @if(owner?.associationStatusUrl) {
+                        <div class="doc" (click)="showFile(associationStatusUrl!, associationStatusFileType)">
+                            <div class="doc-top">
+                                <i class="ri-file-list-3-fill"></i>
+                                <div class="info-title">Statut de l'association</div>
+                            </div>
+                            <div class="doc-type">{{ associationStatusFileType }}</div>
+                            <i class="ri-eye-2-line eye"></i>
+                        </div>
+                    }
+                    @if(owner?.rccmUrl) {
+                        <div class="doc" style="width: 420px; grid-column: span 2;" (click)="showFile(rccmUrl!, rccmFileType)">
+                            <div class="doc-top">
+                                <i class="ri-file-list-3-fill"></i>
+                                <div class="info-title">Registre du Commerce et du Crédit Mobilier</div>
+                            </div>
+                            <div class="doc-type">{{ rccmFileType }}</div>
+                            <i class="ri-eye-2-line eye"></i>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="buttons-container">
+            <div class="button" (click)="close()">Annuler</div>
+            <div class="button validate" (click)="validateOwner()">Valider</div>
+            <div class="button refuse" (click)="refuseOwner()">Refuser</div>
+        </div>
+    </div> 
+</div>

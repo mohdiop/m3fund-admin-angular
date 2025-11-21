@@ -1,9 +1,22 @@
+<app-success-dialog
+    [show]="successDialogVisible"
+    [message]="successMessage"
+    (closed)="closeSuccessDialog()">
+</app-success-dialog>
+
 @if(showUserInfo) {
     <div 
     class="dialog-overlay" 
-    (click)="hideUserInfoDialog()">
-
-    
+    (click)="hideUserInfoDialog()"
+    style="height: 100%; overflow-y: scroll;">
+    <app-owner-details
+        [owner]="owner"
+        (closed)="hideUserInfoDialog()"
+        (click)="$event.stopPropagation()"
+        (validatedOwner)="validateOwner()"
+        (refusedOwner)="refuseOwner()"
+    >
+    </app-owner-details>
 </div>
 }
 
@@ -142,6 +155,7 @@
                                 <th class="table-text">Email</th>
                                 <th class="table-text">Téléphone</th>
                                 <th class="table-text">Etat</th>
+                                <th class="table-text">Date</th>
                                 <th class="table-text" style="text-align: center;">Actions</th>
                             </tr>
                             </thead>
@@ -172,9 +186,11 @@
                                     <td class="table-text">{{ item.owner.phone }}</td>
 
                                     <td class="table-text validation-state">{{ item.state | validationStatePipe }}</td>
+
+                                    <td class="table-text">{{ item.date | date:"d MMM yyyy 'à' hh:mm:ss"}}</td>
     
                                     <td class="actions">
-                                    <button class="icon-btn" [class.view]="true" (click)="showUserInfoDialog()"><i class="ri-eye-2-line"></i></button>
+                                    <button class="icon-btn" [class.view]="true" (click)="showUserInfoDialog(item.owner.id)"><i class="ri-eye-2-line"></i></button>
                                     <button class="icon-btn" [class.check]="true" (click)="showConfirmDialog('approve', item.owner.id)"><i class="ri-check-line"></i></button>
                                     <button class="icon-btn" [class.close]="true" (click)="showConfirmDialog('refuse', item.owner.id)"><i class="ri-close-line"></i></button>
                                     </td>
@@ -182,7 +198,7 @@
                                 }
                             } @else {
                                 <tr>
-                                <td colspan="7" class="empty">Aucune demande de validation pour l'instant</td>
+                                <td colspan="8" class="empty">Aucune demande de validation pour l'instant</td>
                                 </tr>
                             }
                             </tbody>

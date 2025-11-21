@@ -1,20 +1,28 @@
 import { DatePipe } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AdminDashBoardResponse, ResponseError, SimpleUserResponse, ValidationRequestResponse } from '../../../models/interfaces';
+import { AdminDashBoardResponse, ProjectOwnerResponse, ResponseError, SimpleUserResponse, ValidationRequestResponse } from '../../../models/interfaces';
 import { StatsService } from '../../../services/stats-service';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartData, ChartOptions, ChartType } from 'chart.js';
 import { getLastFiveMonths, getRoleCount, getRoleDistribution, getUsersCountLastFiveMonths } from '../../../utilities/utilities';
 import { ValidationService } from '../../../services/validation-service';
 import { ValidationStatePipe } from '../../../pipes/validation-state-pipe';
+import { SuccessDialog } from '../../customs/success-dialog/success-dialog';
+import { OwnerService } from '../../../services/owner-service';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { PublicService } from '../../../services/public-service';
+import { OwnerDetails } from '../../customs/owner-details/owner-details';
 
 @Component({
   selector: 'app-users',
   imports: [
     DatePipe,
     BaseChartDirective,
-    ValidationStatePipe
+    ValidationStatePipe,
+    SuccessDialog,
+    PdfViewerModule,
+    OwnerDetails
   ],
   templateUrl: './users.html',
   styleUrl: './users.css',
@@ -29,7 +37,10 @@ export class Users implements OnInit, OnDestroy {
   showConfirm = false;
   loadingForValidation = false;
   ownerId = 0;
+  owner: ProjectOwnerResponse | undefined;
   actionType: "approve" | "refuse" | undefined;
+  successDialogVisible = false;
+  successMessage = "";
 
   pieChartType: ChartType = 'doughnut';
 
@@ -61,7 +72,9 @@ export class Users implements OnInit, OnDestroy {
     private router: Router,
     private cdr: ChangeDetectorRef,
     private statsService: StatsService,
-    private validationService: ValidationService
+    private validationService: ValidationService,
+    private ownerService: OwnerService,
+    private publicService: PublicService
   ) {}
 
   ngOnInit(): void {
@@ -147,8 +160,8 @@ export class Users implements OnInit, OnDestroy {
     this.validationService.getAllOwnersPendingValidations().subscribe(
       {
         next: (value) => {
-          console.log(value)
           this.pendingValidations = value
+          this.cdr.detectChanges()
         },
         error: (error: ResponseError) => {
           console.log(error.message)
@@ -170,9 +183,20 @@ export class Users implements OnInit, OnDestroy {
     }
   }
 
-  showUserInfoDialog() {
-    this.showUserInfo = true;
-    this.cdr.detectChanges()
+  showUserInfoDialog(ownerId: number) {
+    this.ownerService.getOwnerById(ownerId).subscribe({
+      next: (value: ProjectOwnerResponse) => {
+        this.owner = value;
+        this.ownerId = ownerId;
+        this.showUserInfo = true;
+        this.cdr.detectChanges()
+      },
+      error: (error: ResponseError) => {
+        console.log(error);
+        this.showUserInfo = false;
+        this.cdr.detectChanges()
+      }
+    });
   }
 
   hideUserInfoDialog() {
@@ -199,10 +223,12 @@ export class Users implements OnInit, OnDestroy {
         next: (value) => {
           console.log(value)
           this.loadingForValidation = false;
+          this.showUserInfo = false;
           this.cdr.detectChanges()
           this.loadValidations()
           this.hideConfirmValidation()
-          this.cdr.detectChanges()
+          this.refreshPage()
+          this.showSuccess("Le porteur a été validé avec succès !")
         },
         error: (error: ResponseError) => {
           console.log(error.message)
@@ -221,10 +247,11 @@ export class Users implements OnInit, OnDestroy {
         next: (value) => {
           console.log(value)
           this.loadingForValidation = false;
+          this.showUserInfo = false;
           this.cdr.detectChanges()
-          this.loadValidations()
           this.hideConfirmValidation()
-          this.cdr.detectChanges()
+          this.refreshPage()
+          this.showSuccess("Le porteur a été réfusé.")
         },
         error: (error: ResponseError) => {
           console.log(error.message)
@@ -235,4 +262,14 @@ export class Users implements OnInit, OnDestroy {
     )
   }
 
+  showSuccess(message: string) {
+    this.successMessage = message;
+    this.successDialogVisible = true;
+    this.cdr.detectChanges();
+  }
+
+  closeSuccessDialog() {
+    this.successDialogVisible = false;
+    this.cdr.detectChanges();
+  }
 }
