@@ -56,7 +56,17 @@ export interface Project {
   description: string;
   resume: string;
   objective: string;
-  domain: "AGRICULTURE" |
+  domain: ProjectDomain;
+  websiteLink: string;
+  imagesUrl: string[];
+  videoUrl: string;
+  businessPlanUrl: string;
+  launchedAt: string;
+  createdAt: string; 
+  isValidated: boolean;
+}
+
+export type ProjectDomain = "AGRICULTURE" |
     "BREEDING" |
     "EDUCATION" |
     "HEALTH" |
@@ -67,14 +77,6 @@ export interface Project {
     "SOLIDARITY" |
     "SHOPPING" |
     "SOCIAL";
-  websiteLink: string;
-  imagesUrl: string[];
-  videoUrl: string;
-  businessPlanUrl: string;
-  launchedAt: string;
-  createdAt: string; 
-  isValidated: boolean;
-}
 
 export interface AdminDashBoardResponse {
   totalActiveUsers: number;
@@ -107,11 +109,19 @@ export interface SimpleOwnerResponse {
   profilePicture?: string;
 }
 
-export interface ValidationRequestResponse {
+export interface OwnersValidationRequestResponse {
   id: number;
   owner: SimpleOwnerResponse;
   date: string;
   state: "PENDING" | "APPROVED" | "REFUSED"
+}
+
+export interface ProjectsValidationRequestResponse {
+  id: number;
+  project: Project;
+  date: string;
+  state: "PENDING" | "APPROVED" | "REFUSED";
+  ownerName: string;
 }
 
 export interface OwnerDetails {

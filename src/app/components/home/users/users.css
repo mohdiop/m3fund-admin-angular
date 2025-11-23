@@ -147,6 +147,10 @@
     color: #06A664;
 }
 
+.monthly-adds-value.bad i {
+    color: red;
+}
+
 .monthly-adds-comment {
     font-size: 0.7em;
     color: rgba(0, 0, 0, 0.4);

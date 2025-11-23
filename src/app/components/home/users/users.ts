@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AdminDashBoardResponse, ProjectOwnerResponse, ResponseError, SimpleUserResponse, ValidationRequestResponse } from '../../../models/interfaces';
+import { AdminDashBoardResponse, ProjectOwnerResponse, ResponseError, SimpleUserResponse, OwnersValidationRequestResponse } from '../../../models/interfaces';
 import { StatsService } from '../../../services/stats-service';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartData, ChartOptions, ChartType } from 'chart.js';
@@ -32,7 +32,7 @@ export class Users implements OnInit, OnDestroy {
   isLoading = false;
   currentDate = Date.now()
   stats: AdminDashBoardResponse | null = null
-  pendingValidations: ValidationRequestResponse[] | undefined;
+  pendingValidations: OwnersValidationRequestResponse[] | undefined;
   showUserInfo = false;
   showConfirm = false;
   loadingForValidation = false;

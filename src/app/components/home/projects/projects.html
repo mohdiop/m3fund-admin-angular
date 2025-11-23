@@ -1,1 +1,180 @@
-<p>projects works!</p>
+@if (showConfirm) {
+     <div 
+        class="dialog-overlay" 
+        (click)="loadingForValidation? {} : hideConfirmValidation()">
+        <div class="dialog-container" (click)="$event.stopPropagation()">
+            <div class="dialog-title">Confirmation</div>
+            <div class="dialog-text">Êtes-vous sûr de vouloir @switch (actionType) {
+                @case ("approve") {accepter}
+                @case ("refuse") {refuser}
+                } cette demande?</div>
+
+            <div class="dialog-actions">
+                <button class="cancel" (click)="loadingForValidation? {} : hideConfirmValidation()">Annuler</button>
+                <button class="confirm" [class.loading]="loadingForValidation" [class.refuse]="actionType === 'refuse'" (click)="actionType === 'refuse' ? refuseProject() : validateProject()">@switch (actionType) {
+                @case ("approve") {Accepter}
+                @case ("refuse") {Refuser}
+                }</button>
+            </div>
+        </div>
+    </div>
+}
+<div class="principal-container">
+    <div class="top-container">
+        <div class="dashboard-texts">
+            <div class="dashboard-text">
+                Projets ({{ stats?.projects?.length }})
+            </div>
+            <div class="cheat-text">
+                Souvent oser augmente les chances de réussite.
+            </div>
+        </div>
+        <div class="refresh-area" (click)="refreshPage()">
+            <div>
+                Rafraîchir
+            </div>
+            <i class="ri-refresh-line"></i>
+        </div>
+    </div>
+    @if (isLoading) {
+        <div class="loading-zone">
+            <div class="spinner-dots">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <p>Chargement</p>
+        </div>
+    } @else {
+        <div class="bottom-container">
+            <div class="current-date">
+                {{ (currentDate | date:"EEEE, 'le' d MMMM yyyy")?.replace((currentDate | date:"EEEE, 'le' d MMMM yyyy")?.charAt(0) ?? "", (currentDate | date:"EEEE, 'le' d MMMM yyyy")?.charAt(0)?.toUpperCase() ?? "") }}
+            </div>
+            <div class="stats-container">
+                <div class="t-container">
+                    <div class="counts-container">
+                        <div class="active-users">
+                            <div class="title">
+                                Total de projets validés
+                            </div>
+                            <div class="value" style="color: #06A664;">
+                                {{ getActiveProjects(stats?.projects) }}
+                            </div>
+                        </div>
+                        <div class="inactive-users">
+                            <div class="title">
+                                Total de projects non validés
+                            </div>
+                            <div class="value" style="color: rgb(255, 83, 83);">
+                                @if(stats?.totalActiveUsers !== undefined) {
+                                    {{ stats?.projects?.length! - getActiveProjects(stats?.projects)}}
+                                } @else {
+                                    0
+                                }
+                            </div>
+                        </div>
+                        <div class="monthly-adds">
+                            <div class="title">
+                                Total de projects créés ce mois
+                            </div>
+                            <div class="monthly-adds-value" [class.bad]="!isGreaterOrEqualTo(stats?.projectsCurrentMonthScore, stats?.projectsLastMonthScore)">
+                                <i [class]="isGreaterOrEqualTo(stats?.projectsCurrentMonthScore, stats?.projectsLastMonthScore) ? 'ri-arrow-right-up-long-line' : 'ri-arrow-right-down-long-line'"></i>
+                                <div class="value">
+                                    {{ stats?.monthlyNewProjects }}
+                                </div>
+                            </div>
+                            <div class="monthly-adds-comment">
+                                @if(isGreaterOrEqualTo(stats?.projectsCurrentMonthScore, stats?.projectsLastMonthScore)) {
+                                    En hausse par rapport au mois passé
+                                } @else {
+                                    En baisse par rapport au mois passé
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pie-chart">
+                        <div class="title">
+                            Répartition des projects par domaine
+                        </div>
+                        <canvas 
+                            baseChart
+                            [data]="pieChartData"
+                            [type]="pieChartType"
+                            [options]="pieChartOptions"
+                            width="140px"
+                            height="140px">
+                        </canvas>
+                    </div>
+                    <div class="bar-chart">
+                        <div class="title">
+                            Répartition des projects créés au cours des 5 derniers mois
+                        </div>
+                        <canvas baseChart
+                                [data]="barChartData"
+                                [options]="barChartOptions"
+                                [type]="'bar'"
+                                height="90px">
+                        </canvas>
+                    </div>
+                </div>
+                <div class="b-container">
+                    <div class="validation-title">
+                        Demande de validation de projets
+                    </div>
+                    <div class="table-container">
+                        <table class="custom-table">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" /></th>
+                                <th class="table-text">Nom</th>
+                                <th class="table-text">Domaine</th>
+                                <th class="table-text">Poteur</th>
+                                <th class="table-text">Site web</th>
+                                <th class="table-text">Etat</th>
+                                <th class="table-text">Date</th>
+                                <th class="table-text" style="text-align: center;">Actions</th>
+                            </tr>
+                            </thead>
+    
+                            <tbody>
+    
+                            @if ((pendingValidations !== undefined) && pendingValidations!.length > 0) {
+                                @for (item of pendingValidations; track item.id) {
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" />
+                                    </td>
+    
+                                    <td class="table-text">{{ item.project.name }}</td>
+    
+                                    <td class="table-text">{{ item.project.domain | projectDomain }}</td>
+    
+                                    <td class="table-text">{{ item.ownerName }}</td>
+    
+                                    <td class="table-text"><a [href]="item.project.websiteLink" target="_blank">Voir le site</a></td>
+
+                                    <td class="table-text validation-state">{{ item.state | validationStatePipe }}</td>
+
+                                    <td class="table-text">{{ item.date | date:"d MMM yyyy 'à' hh:mm:ss"}}</td>
+    
+                                    <td class="actions">
+                                    <button class="icon-btn" [class.view]="true"><i class="ri-eye-2-line"></i></button>
+                                    <button class="icon-btn" [class.check]="true" (click)="showConfirmDialog('approve', item.project.id)"><i class="ri-check-line"></i></button>
+                                    <button class="icon-btn" [class.close]="true" (click)="showConfirmDialog('refuse', item.project.id)"><i class="ri-close-line"></i></button>
+                                    </td>
+                                </tr>
+                                }
+                            } @else {
+                                <tr>
+                                <td colspan="8" class="empty">Aucune demande de validation pour l'instant</td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

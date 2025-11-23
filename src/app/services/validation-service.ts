@@ -27,6 +27,23 @@ export class ValidationService {
     );
   }
 
+  getAllProjectsPendingValidations(): Observable<any> {
+    const url = `${Env.baseUrl}/validations/projects`;
+    const accessToken = localStorage.getItem('accessToken');
+    const headers = new HttpHeaders({
+      "Content-type": "application/json", 
+      "Authorization": `Bearer ${accessToken}`
+    });
+    return this.http.get(
+      url,
+      {headers}
+    ).pipe(
+        catchError((error: HttpErrorResponse) => {
+          return throwError(() => error.error as ResponseError);
+        })
+    );
+  }
+
   validateOwner(ownerId: number): Observable<any> {
     const url = `${Env.baseUrl}/validations/owners/${ownerId}/validate`;
     const accessToken = localStorage.getItem("accessToken");
@@ -47,6 +64,42 @@ export class ValidationService {
 
   refuseOwner(ownerId: number): Observable<any> {
     const url = `${Env.baseUrl}/validations/owners/${ownerId}/refuse`;
+    const accessToken = localStorage.getItem("accessToken");
+    const headers = new HttpHeaders({
+      "Content-type": "application/json", 
+      "Authorization": `Bearer ${accessToken}`
+    });
+    return this.http.post(
+      url,
+      {},
+      {headers: headers}
+    ).pipe(
+        catchError((error: HttpErrorResponse) => {
+          return throwError(() => error.error as ResponseError);
+        })
+    );
+  }
+
+  validateProject(projectId: number): Observable<any> {
+    const url = `${Env.baseUrl}/validations/projects/${projectId}/validate`;
+    const accessToken = localStorage.getItem("accessToken");
+    const headers = new HttpHeaders({
+      "Content-type": "application/json", 
+      "Authorization": `Bearer ${accessToken}`
+    });
+    return this.http.post(
+      url,
+      {},
+      {headers: headers}
+    ).pipe(
+        catchError((error: HttpErrorResponse) => {
+          return throwError(() => error.error as ResponseError);
+        })
+    );
+  }
+
+  refuseProject(projectId: number): Observable<any> {
+    const url = `${Env.baseUrl}/validations/projects/${projectId}/refuse`;
     const accessToken = localStorage.getItem("accessToken");
     const headers = new HttpHeaders({
       "Content-type": "application/json", 

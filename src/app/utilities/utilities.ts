@@ -277,3 +277,76 @@ export function getExtensionFromBlob(blob: Blob): string {
 
   return ext.toUpperCase(); // → "PNG"
 }
+
+export function getProjectDomainStats(projects: Project[]) {
+  const domainMeta: Record<Project['domain'], { label: string; color: string }> = {
+    AGRICULTURE: { label: "Agriculture", color: "#FB8C00" },        // orange
+    BREEDING: { label: "Élevage", color: "#795548" },               // brown
+    EDUCATION: { label: "Éducation", color: "#00897B" },            // teal
+    HEALTH: { label: "Santé", color: "#03A9F4" },                   // lightBlue
+    MINE: { label: "Mine", color: "#9E9E9E" },                      // grey
+    CULTURE: { label: "Culture", color: "#9C27B0" },                // purple
+    ENVIRONMENT: { label: "Environnement", color: "#06A664" },      // green
+    COMPUTER_SCIENCE: { label: "Informatique", color: "#607D8B" },  // blueGrey
+    SOLIDARITY: { label: "Solidarité", color: "#E91E63" },          // pink
+    SHOPPING: { label: "Commerce", color: "#FFC107" },              // amber
+    SOCIAL: { label: "Social", color: "#FF5252" },                  // redAccent
+  };
+
+  const counts: Record<Project['domain'], number> = {
+    AGRICULTURE: 0,
+    BREEDING: 0,
+    EDUCATION: 0,
+    HEALTH: 0,
+    MINE: 0,
+    CULTURE: 0,
+    ENVIRONMENT: 0,
+    COMPUTER_SCIENCE: 0,
+    SOLIDARITY: 0,
+    SHOPPING: 0,
+    SOCIAL: 0,
+  };
+
+  // Compter les occurrences par domaine
+  projects.forEach(p => counts[p.domain]++);
+
+  const total = projects.length || 1;
+
+  // Construire les données pour Chart.js
+  const labels = Object.keys(counts).map((domain) => domainMeta[domain as Project['domain']].label);
+  const data = Object.values(counts).map(c => Math.round((c / total) * 100));
+  const backgroundColor = Object.keys(counts).map((domain) => domainMeta[domain as Project['domain']].color);
+
+  return {
+    labels,
+    datasets: [
+      {
+        data,
+        backgroundColor
+      }
+    ]
+  };
+}
+
+export function getProjectsByLast5Months(projects: Project[]) {
+  const now = new Date();
+
+  // Générer les 5 derniers mois (y compris le mois actuel)
+  const last5Months = [...Array(5)].map((_, i) => {
+    const d = new Date(now.getFullYear(), now.getMonth() - (4 - i), 1);
+    return { year: d.getFullYear(), month: d.getMonth() }; // month = 0..11
+  });
+
+  // Compter les projets pour chaque mois
+  const result = last5Months.map(({ year, month }) => {
+    const count = projects.filter(p => {
+      const date = new Date(p.createdAt);
+      return date.getFullYear() === year && date.getMonth() === month;
+    }).length;
+
+    return count;
+  });
+
+  return result;
+}
+
