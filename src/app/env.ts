@@ -1,3 +1,3 @@
 export class Env {
-    static baseUrl: String = "https://m3fund-api.onrender.com/api/v1"
+    static baseUrl: String = "http://localhost:7878/api/v1"
 }

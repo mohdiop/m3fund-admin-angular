@@ -92,6 +92,9 @@ export interface AdminDashBoardResponse {
   payments: Payment[];
   projects: Project[];
   users: SimpleUserResponse[];
+  monthlyNewPayments: number,
+  paymentsCurrentMonthScore: number,
+  paymentsLastMonthScore: number
 }
 
 export interface RoleDistribution {
@@ -195,4 +198,23 @@ export interface ProjectOwnerResponse {
   logoUrl?: string | null;
   profilePictureUrl?: string | null;
   bankStatementUrl?: string | null;
+}
+
+export interface SystemResponse {
+  name: string;
+  version: string;
+  fund: number;
+  createdAt: number;
+}
+
+export interface PendingForDisbursingCampaign {
+  id: number;
+  projectName: string;
+  projectOwnerName: string;
+  projectOwnerPictureUrl: string;
+  startedAt: string;
+  endedAt: string;
+  state: 'PENDING' | 'FINISHED';
+  isDisbursed: boolean;
+  amountToDisburse: number;
 }

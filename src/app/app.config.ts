@@ -6,6 +6,7 @@ import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { registerLocaleData } from '@angular/common';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { provideEchartsCore } from 'ngx-echarts';
 
 registerLocaleData(localeFr, 'fr')
 
@@ -15,6 +16,9 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes),
     provideHttpClient(),
-    { provide: LOCALE_ID, useValue: 'fr' }, provideCharts(withDefaultRegisterables())
+    { provide: LOCALE_ID, useValue: 'fr' }, provideCharts(withDefaultRegisterables()),
+    provideEchartsCore({
+      echarts: () => import('echarts')
+    })
   ]
 };

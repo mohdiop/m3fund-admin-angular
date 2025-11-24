@@ -1,1 +1,150 @@
-<p>payments works!</p>
+<app-success-dialog
+    [show]="successDialogVisible"
+    [message]="successMessage"
+    (closed)="closeSuccessDialog()">
+</app-success-dialog>
+
+@if (showConfirm) {
+     <div 
+    class="dialog-overlay" 
+    (click)="loadingForDisbursing? {} : hideConfirmDialog()">
+        <div class="dialog-container" (click)="$event.stopPropagation()">
+            <div class="dialog-title">Confirmation</div>
+            <div class="dialog-text">
+                <p>Êtes-vous sûr de vouloir décaisser <span style="font-size: 1.3em; font-weight: 500;">{{ disbursingAmount | numberSpaces }}</span> FCFA ?</p>
+                <p>La part de {{ ownerName }} est de <span style="font-size: 1.3em; font-weight: 500;">{{ (disbursingAmount * 90) / 100 | numberSpaces }}</span> FCFA.</p>
+                <p>Les frais sont de <span style="font-size: 1.3em; font-weight: 500;">{{ (disbursingAmount * 10) / 100 | numberSpaces }}</span> FCFA.</p>
+            </div>
+            <div class="dialog-actions">
+                <button class="cancel" (click)="loadingForDisbursing? {} : hideConfirmDialog()">Annuler</button>
+                <button class="confirm" [class.loading]="loadingForDisbursing" (click)="disburseCampaign(disbursingCampaignId)">Décaisser</button>
+            </div>
+        </div>
+    </div>
+}
+
+
+<div class="principal-container">
+    <div class="top-container">
+        <div class="dashboard-texts">
+            <div class="dashboard-text">
+                Paiements
+            </div>
+            <div class="cheat-text">
+                La patience fortifie la résilience face au flow naturel des évènements.
+            </div>
+        </div>
+        <div class="refresh-area" (click)="refreshPage()">
+            <div>
+                Rafraîchir
+            </div>
+            <i class="ri-refresh-line"></i>
+        </div>
+    </div>
+    @if (isLoading) {
+        <div class="loading-zone">
+            <div class="spinner-dots">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <p>Chargement</p>
+        </div>
+    } @else {
+        <div class="bottom-container">
+            <div class="current-date">
+                {{ (currentDate | date:"EEEE, 'le' d MMMM yyyy")?.replace((currentDate | date:"EEEE, 'le' d MMMM yyyy")?.charAt(0) ?? "", (currentDate | date:"EEEE, 'le' d MMMM yyyy")?.charAt(0)?.toUpperCase() ?? "") }}
+            </div>
+            <div class="stats-container">
+                <div class="t-container">
+                    <div class="stl-container">
+                        <div class="stl-text">
+                            Revenue <span style="font-size: 2em; margin-left: 44px; letter-spacing: 1.5px;">{{ system?.fund | numberSpaces}}</span><span style="opacity: 0.6;">  FCFA</span>
+                        </div>
+                        <div style="width: 80M; height: 1px; background-color: #f4f4f4;"></div>
+                        <div class="stl-text">
+                            À décaisser <span style="font-size: 2em; margin-left: 20px; letter-spacing: 1.5px;">{{ totalToDisburse |numberSpaces}}</span><span style="opacity: 0.6;">  FCFA</span>
+                        </div>
+                    </div>
+                    <div class="str-container">
+                        <div class="fund-container">
+                            <div>
+                                Total levé sur la plateforme
+                            </div>
+                            <div>
+                                <span style="font-size: 1.7em;">{{ stats?.totalFund | numberSpaces }}</span><span style="opacity: 0.6;">  FCFA</span>
+                            </div>
+                        </div>
+                        <div class="fund-container">
+                            <div>
+                                Fond levé ce mois
+                            </div>
+                            <div class="monthly-fund-container" [class.bad]="isGreaterOrEqualTo(stats?.paymentsCurrentMonthScore, stats?.paymentsLastMonthScore)">
+                                <div style="background-color: white; height: fit-content; width: fit-content; padding: 2px; border-radius: 5px;">
+                                    <i style="color: #06A664;" [class]="isGreaterOrEqualTo(stats?.paymentsCurrentMonthScore, stats?.paymentsLastMonthScore) ? 'ri-arrow-right-up-long-line' : 'ri-arrow-right-down-long-line'"></i>
+                                </div>
+                                <div><span style="font-size: 1.7em;">{{ stats?.monthlyNewPayments | numberSpaces }}</span> <span style="opacity: 0.6;">  FCFA</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="b-container">
+                    <div class="payments-chart-area">
+                        <div class="payments-chart-top">
+                            <div class="payments-chart-title">Transaction @switch (paymentChartTypeControl.value) {
+                                @case ("daily") { journalière }
+                                @case ("monthly") { mensuelle }
+                                @case ("yearly") { annuelle }
+                                }</div>
+                            <select name="payments" id="payments" [value]="paymentChartType" class="payments-type" [formControl]="paymentChartTypeControl">
+                                <option value="daily">journalière</option>
+                                <option value="monthly">mensuelle</option>
+                                <option value="yearly">annuelle</option>
+                            </select>
+                        </div>
+                        <div class="payments-chart-center">
+                            <div class="payments-chart-type" [class.selected]="paymentChartArea === 'total'" (click)="selectPaymentArea('total')">Total</div>
+                            <div class="payments-chart-type" [class.selected]="paymentChartArea === 'cashed'" (click)="selectPaymentArea('cashed')">Encaissés</div>
+                            <div class="payments-chart-type" [class.selected]="paymentChartArea === 'disbursed'" (click)="selectPaymentArea('disbursed')">Décaissés</div>
+                        </div>
+                        <div echarts [options]="options" class="payments-chart"></div>
+                    </div>
+                    <div class="campaigns-container">
+                        <div class="ct-container">
+                            <div class="payments-chart-title">
+                                Campagnes terminées non décaissées
+                            </div>
+                            <select name="campaigns" id="campaigns" [value]="campaignOrderBYControl" class="payments-type" [formControl]="campaignOrderBYControl">
+                                <option value="maxAmount">montant max</option>
+                                <option value="minAmount">montant min</option>
+                                <option value="recentlyFinished">fin récente</option>
+                                <option value="oldestFinished">fin ancienne</option>
+                            </select>
+                        </div>
+                        <div class="cb-container">
+                            @for (item of pendingCampaigns; track $index) {
+                                <div class="campaign-card">
+                                    <div class="ccname-container">
+                                        <img [src]="usersProfiles.get(item.id) ?? 'noImage.png'" style="width: 32px; height: 32px; border: 2px solid #d9d9d9; border-radius: 100px;" alt="Photo de profile du porteur de projet">
+                                        <div>{{ item.projectOwnerName }}</div>
+                                    </div>
+                                    <div class="ccproject-container">
+                                        <div>{{ item.projectName }}</div>
+                                        <div style="opacity: 0.6;">{{ item.startedAt | date }} - {{ item.endedAt | date }}</div>
+                                    </div>
+                                    <div class="ccamount-container">
+                                        <span style="font-size: 2em;">{{ item.amountToDisburse | numberSpaces }}</span><span style="opacity: 0.6;">  FCFA</span>
+                                    </div>
+                                    <div class="ccbutton-container" (click)="showConfirmDialog(item.id, item.amountToDisburse, item.projectOwnerName)">
+                                        Décaisser
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

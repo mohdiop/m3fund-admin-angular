@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { StatsService } from '../../../services/stats-service';
-import { AdminDashBoardResponse, Payment, ResponseError } from '../../../models/interfaces';
+import { AdminDashBoardResponse, Payment, ResponseError, SystemResponse } from '../../../models/interfaces';
 import { DatePipe } from '@angular/common';
 import { Router } from "@angular/router";
 import { ChartOptions, ChartData, Chart } from 'chart.js';
@@ -17,6 +17,7 @@ import {
 } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { SystemService } from '../../../services/system-service';
 echarts.use([
   LineChart,
   GridComponent,
@@ -41,6 +42,7 @@ echarts.use([
 export class Dashboard implements OnInit, OnDestroy {
 
   stats: AdminDashBoardResponse | null = null
+  system: SystemResponse | undefined;
   isLoading = false;
   currentDate = Date.now()
   selectedGraph = 0
@@ -139,6 +141,15 @@ export class Dashboard implements OnInit, OnDestroy {
       }
       this.updatePaymentsOptions(this.paymentChartArea, this.paymentChartType)
     });
+    this.systemService.getSystemInfo().subscribe({
+      next: (value: SystemResponse) => {
+        this.system = value;
+        this.cdr.detectChanges()
+      },
+      error: (error: ResponseError) => {
+        console.log(error.message)
+      }
+    })
   }
 
   ngOnDestroy(): void {
@@ -148,7 +159,8 @@ export class Dashboard implements OnInit, OnDestroy {
   constructor(
     private statsService: StatsService,
     private cdr: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private systemService: SystemService
   ) {}
 
   isGreaterOrEqualTo(first: number | undefined, second: number | undefined): boolean {

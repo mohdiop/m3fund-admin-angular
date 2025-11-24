@@ -87,3 +87,86 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     align-items: center;
     z-index: 9999;
 }
+
+.dialog-container {
+    background: white;
+    width: 420px;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.2);
+    animation: popup-appear 0.25s ease forwards;
+}
+
+@keyframes popup-appear {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.dialog-title {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.dialog-text {
+    font-size: 0.8em;
+    margin-bottom: 25px;
+}
+
+.dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.dialog-actions .cancel {
+    background: #f4f4f4;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.dialog-actions .cancel:hover {
+    background-color: #d9d9d9;
+}
+
+.dialog-actions .confirm {
+    background: #06A664;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.dialog-actions .confirm.refuse {
+    background-color: red;
+}
+
+.dialog-actions .confirm:hover {
+    background-color: #068651;
+}
+
+.dialog-actions .confirm.refuse:hover {
+    background-color: rgb(208, 0, 0);
+}
+
+.dialog-actions .confirm.loading {
+    background-color: #f4f4f4;
+    color: black;
+    cursor: wait;
+}
+
+.dialog-actions .confirm.refuse:hover {
+    background-color: #f4f4f4;
+    color: black;
+}

@@ -90,7 +90,7 @@
                                         Fond actuel
                                     </div>
                                     <div class="fund-value">
-                                        {{ stats?.actualFund | numberSpaces }} <span class="fcfa">FCFA</span>
+                                        {{ system?.fund | numberSpaces }} <span class="fcfa">FCFA</span>
                                     </div>
                                 </div>
                                 <div class="fund-container">
@@ -102,11 +102,11 @@
                                     </div>
                                 </div>
                                 <div class="card-bottom">
-                                    <div class="monthly-adds" [class.bad]="false">
+                                    <div class="monthly-adds" [class.bad]="!isGreaterOrEqualTo(stats?.paymentsCurrentMonthScore, stats?.paymentsLastMonthScore)">
                                         <div class="monthly-adds-value">
-                                            1 200 000 FCFA
+                                            {{ stats?.monthlyNewPayments | numberSpaces}} FCFA
                                         </div>
-                                        <i [class]="true ? 'ri-arrow-right-up-long-line' : 'ri-arrow-right-down-long-line'"></i>
+                                        <i [class]="isGreaterOrEqualTo(stats?.paymentsCurrentMonthScore, stats?.paymentsLastMonthScore) ? 'ri-arrow-right-up-long-line' : 'ri-arrow-right-down-long-line'"></i>
                                     </div>
                                     <div class="monthly-adds-text">
                                         Levés ce mois

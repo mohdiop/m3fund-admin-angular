@@ -1,9 +1,10 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { AdminResponse, ResponseError } from '../../models/interfaces';
+import { AdminResponse, ResponseError, SystemResponse } from '../../models/interfaces';
 import { UserService } from '../../services/user-service';
 import { AuthService } from '../../services/auth-service';
 import { Subscription } from 'rxjs';
+import { SystemService } from '../../services/system-service';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +14,8 @@ import { Subscription } from 'rxjs';
 })
 export class Home implements OnInit, OnDestroy {
   _isAuthenticated = false;
-  userInfo: AdminResponse|null = null
+  userInfo: AdminResponse | null = null;
+  system: SystemResponse | undefined;
   selectedMenu = 0
   showLogoutDialog = false;
   private sub!: Subscription;
@@ -73,7 +75,8 @@ export class Home implements OnInit, OnDestroy {
     private router: Router,
     private userService: UserService,
     private cdr: ChangeDetectorRef,
-    private authService: AuthService
+    private authService: AuthService,
+    private systemService: SystemService
   ) {
     const isAuthenticatedString = localStorage.getItem('isAuthenticated')
     this._isAuthenticated = isAuthenticatedString === 'true';
@@ -132,6 +135,15 @@ export class Home implements OnInit, OnDestroy {
         }
       }
     });
+    this.systemService.getSystemInfo().subscribe({
+      next: (value: SystemResponse) => {
+        this.system = value;
+        this.cdr.detectChanges();
+      },
+      error: (error: ResponseError) => {
+        console.log(error.message)
+      }
+    })
   }
 
   ngOnDestroy(): void {
