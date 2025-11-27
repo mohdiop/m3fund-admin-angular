@@ -37,6 +37,7 @@ export class Users implements OnInit, OnDestroy {
   showConfirm = false;
   loadingForValidation = false;
   ownerId = 0;
+  validationId = 0;
   owner: ProjectOwnerResponse | undefined;
   actionType: "approve" | "refuse" | undefined;
   successDialogVisible = false;
@@ -183,11 +184,12 @@ export class Users implements OnInit, OnDestroy {
     }
   }
 
-  showUserInfoDialog(ownerId: number) {
+  showUserInfoDialog(ownerId: number, validationId: number) {
     this.ownerService.getOwnerById(ownerId).subscribe({
       next: (value: ProjectOwnerResponse) => {
         this.owner = value;
         this.ownerId = ownerId;
+        this.validationId = validationId;
         this.showUserInfo = true;
         this.cdr.detectChanges()
       },
@@ -204,10 +206,10 @@ export class Users implements OnInit, OnDestroy {
     this.cdr.detectChanges()
   }
 
-  showConfirmDialog(actionType: "approve" | "refuse" | undefined, ownerId: number) {
+  showConfirmDialog(actionType: "approve" | "refuse" | undefined, validationId: number) {
     this.actionType = actionType;
     this.showConfirm = true;
-    this.ownerId = ownerId;
+    this.validationId = validationId;
     this.cdr.detectChanges()
   }
 
@@ -218,7 +220,7 @@ export class Users implements OnInit, OnDestroy {
 
   validateOwner() {
     this.loadingForValidation = true;
-    this.validationService.validateOwner(this.ownerId).subscribe(
+    this.validationService.validateOwner(this.validationId).subscribe(
       {
         next: (value) => {
           console.log(value)
@@ -242,7 +244,7 @@ export class Users implements OnInit, OnDestroy {
   refuseOwner() {
     this.loadingForValidation = true;
     this.cdr.detectChanges()
-    this.validationService.refuseOwner(this.ownerId).subscribe(
+    this.validationService.refuseOwner(this.validationId).subscribe(
       {
         next: (value) => {
           console.log(value)

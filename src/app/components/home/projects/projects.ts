@@ -33,7 +33,7 @@ isLoading = false;
   showUserInfo = false;
   showConfirm = false;
   loadingForValidation = false;
-  projectId = 0;
+  validationId = 0;
   project: Project | undefined;
   actionType: "approve" | "refuse" | undefined;
   successDialogVisible = false;
@@ -204,10 +204,10 @@ isLoading = false;
     this.cdr.detectChanges()
   }
 
-  showConfirmDialog(actionType: "approve" | "refuse" | undefined, projectId: number) {
+  showConfirmDialog(actionType: "approve" | "refuse" | undefined, validationId: number) {
     this.actionType = actionType;
     this.showConfirm = true;
-    this.projectId = projectId;
+    this.validationId = validationId;
     this.cdr.detectChanges()
   }
 
@@ -218,7 +218,7 @@ isLoading = false;
 
   validateProject() {
     this.loadingForValidation = true;
-    this.validationService.validateProject(this.projectId).subscribe(
+    this.validationService.validateProject(this.validationId).subscribe(
       {
         next: (value) => {
           this.loadingForValidation = false;
@@ -241,7 +241,7 @@ isLoading = false;
   refuseProject() {
     this.loadingForValidation = true;
     this.cdr.detectChanges()
-    this.validationService.refuseProject(this.projectId).subscribe(
+    this.validationService.refuseProject(this.validationId).subscribe(
       {
         next: (value) => {
           this.loadingForValidation = false;

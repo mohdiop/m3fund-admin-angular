@@ -9,7 +9,7 @@
 
 i {
     font-size: 24px;
-}
+} 
 
 .top-container{
     width: 100%;
@@ -22,7 +22,7 @@ i {
 .dashboard-texts {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: start;
     box-sizing: border-box;
 }
 

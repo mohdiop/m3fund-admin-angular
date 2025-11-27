@@ -44,8 +44,8 @@ export class ValidationService {
     );
   }
 
-  validateOwner(ownerId: number): Observable<any> {
-    const url = `${Env.baseUrl}/validations/owners/${ownerId}/validate`;
+  validateOwner(validationId: number): Observable<any> {
+    const url = `${Env.baseUrl}/validations/${validationId}/owners/validate`;
     const accessToken = localStorage.getItem("accessToken");
     const headers = new HttpHeaders({
       "Content-type": "application/json", 
@@ -62,8 +62,8 @@ export class ValidationService {
     );
   }
 
-  refuseOwner(ownerId: number): Observable<any> {
-    const url = `${Env.baseUrl}/validations/owners/${ownerId}/refuse`;
+  refuseOwner(validationId: number): Observable<any> {
+    const url = `${Env.baseUrl}/validations/${validationId}/owners/refuse`;
     const accessToken = localStorage.getItem("accessToken");
     const headers = new HttpHeaders({
       "Content-type": "application/json", 
@@ -80,8 +80,8 @@ export class ValidationService {
     );
   }
 
-  validateProject(projectId: number): Observable<any> {
-    const url = `${Env.baseUrl}/validations/projects/${projectId}/validate`;
+  validateProject(validationId: number): Observable<any> {
+    const url = `${Env.baseUrl}/validations/${validationId}/projects/validate`;
     const accessToken = localStorage.getItem("accessToken");
     const headers = new HttpHeaders({
       "Content-type": "application/json", 
@@ -98,8 +98,8 @@ export class ValidationService {
     );
   }
 
-  refuseProject(projectId: number): Observable<any> {
-    const url = `${Env.baseUrl}/validations/projects/${projectId}/refuse`;
+  refuseProject(validationId: number): Observable<any> {
+    const url = `${Env.baseUrl}/validations/${validationId}/projects/refuse`;
     const accessToken = localStorage.getItem("accessToken");
     const headers = new HttpHeaders({
       "Content-type": "application/json", 

@@ -19,7 +19,7 @@
 .dashboard-texts {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: start;
     box-sizing: border-box;
 }
 
