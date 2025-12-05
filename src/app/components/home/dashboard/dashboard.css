@@ -2,10 +2,12 @@
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-rows: calc(7% - 5px) (93% - 5px);
+    grid-template-rows: 7% 93%;
     gap: 10px;
     box-sizing: border-box;
+    padding-bottom: 15px;
 }
+
 
 .top-container{
     width: 100%;
