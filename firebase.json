@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/browser",
+    "public": "dist/m3fund-admin-angular/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
