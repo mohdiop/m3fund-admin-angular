@@ -1,19 +1,32 @@
+/* =========================
+   Global
+========================= */
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: Arial, sans-serif;
+}
+
 .principal-container {
     width: 100%;
-    height: 100%;
+    min-height: 100dvh;
     display: grid;
-    grid-template-rows: 7% 93%;
+    grid-template-rows: auto 1fr;
     gap: 10px;
     box-sizing: border-box;
     padding-bottom: 15px;
 }
 
-.top-container{
+/* =========================
+   Header / Top
+========================= */
+.top-container {
     width: 100%;
-    height: 100%;
     display: grid;
-    box-sizing: border-box;
-    grid-template-columns: 80% 20%;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 10px;
 }
 
 .dashboard-texts {
@@ -24,7 +37,7 @@
 }
 
 .dashboard-text {
-    font-size: 1.2em;
+    font-size: clamp(1em, 2vw, 1.2em);
 }
 
 .cheat-text {
@@ -68,12 +81,13 @@
     color: white;
 }
 
+/* =========================
+   Bottom Container
+========================= */
 .bottom-container {
     width: 100%;
-    height: 100%;
     display: grid;
-    grid-template-rows: 5% 95%;
-    padding-bottom: 10px;
+    grid-template-rows: auto 1fr;
     gap: 10px;
     box-sizing: border-box;
 }
@@ -81,42 +95,40 @@
 .current-date {
     font-size: 0.8em;
     width: 100%;
-    height: 100%;
     display: flex;
     align-items: center;
 }
 
 .stats-container {
     width: 100%;
-    height: 100%;
-    gap: 5px;
     display: grid;
-    grid-template-rows: 48% 52%;
+    grid-template-rows: auto 1fr;
+    gap: 10px;
     box-sizing: border-box;
 }
 
+/* =========================
+   Cards / t-container
+========================= */
 .t-container {
     width: 100%;
-    height: 100%;
     display: grid;
-    grid-template-columns: 25% 25% 50%;
-    box-sizing: border-box;
-    gap: 5px;
-    padding-right: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding-right: 0;
 }
 
 .counts-container {
     width: 100%;
-    height: 100%;
     background-color: white;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     padding: 5px 10px;
     display: flex;
     flex-direction: column;
-    box-sizing: border-box;
     align-items: start;
     justify-content: center;
+    box-sizing: border-box;
 }
 
 .title {
@@ -129,14 +141,12 @@
 
 .monthly-adds {
     width: 100%;
-    height: fit-content;
     display: flex;
     flex-direction: column;
 }
 
 .monthly-adds-value {
     width: 100%;
-    height: fit-content;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -156,19 +166,10 @@
     color: rgba(0, 0, 0, 0.4);
 }
 
-.pie-chart {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    background-color: white;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    box-sizing: border-box;
-}
-
+/* =========================
+   Pie / Bar Charts
+========================= */
+.pie-chart,
 .bar-chart {
     width: 100%;
     height: 100%;
@@ -176,88 +177,86 @@
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    padding-right: 10px;
-    padding-left: 10px;
     background-color: white;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     box-sizing: border-box;
+    padding: 10px;
 }
 
+/* =========================
+   Validation Table
+========================= */
 .b-container {
     width: 100%;
-    height: 100%;
     display: grid;
     grid-template-rows: 20% 80%;
 }
 
 .validation-title {
     width: 100%;
-    height: 100%;
     display: flex;
     align-items: center;
+    font-weight: 500;
 }
 
 .table-container {
     width: 100%;
-    max-height: 120px;
+    max-height: 260px;
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: auto;
     border: 1px solid #ddd;
     border-radius: 10px;
 }
 
-.table-text {
-    font-size: 0.8em;
-}
-
 .custom-table {
-  width: 100%;
-  border-collapse: collapse;
+    width: 100%;
+    min-width: 900px;
+    border-collapse: collapse;
 }
 
 .custom-table thead {
-  background: #2d2d2d;
-  color: white;
-  position: sticky;
-  top: 0;
-  z-index: 2;
+    background: #2d2d2d;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 2;
 }
 
 .custom-table th {
-  padding: 5px 5px;
-  text-align: left;
-  font-weight: normal;
+    padding: 5px;
+    text-align: left;
+    font-weight: normal;
 }
 
 .custom-table td {
-  padding: 5px 5px;
-  border-bottom: 1px solid #eee;
-  background: white;
+    padding: 5px;
+    border-bottom: 1px solid #eee;
+    background: white;
 }
 
 .custom-table tbody tr:hover {
-  background: #f8f8f8;
+    background: #f8f8f8;
 }
 
 .actions {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
 }
 
 .icon-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 5px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  background: #f4f4f4;
-  cursor: pointer;
-  font-size: 18px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0.5;
+    width: 32px;
+    height: 32px;
+    border-radius: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background: #f4f4f4;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.5;
 }
 
 .icon-btn i {
@@ -283,20 +282,23 @@
 }
 
 .empty {
-  text-align: center;
-  padding: 20px;
-  color: rgba(0, 0, 0, 0.4);
+    text-align: center;
+    padding: 20px;
+    color: rgba(0, 0, 0, 0.4);
 }
 
 input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-  cursor: pointer;
-  position: relative;
+    width: 18px;
+    height: 18px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
 }
 
+/* =========================
+   Dialogs
+========================= */
 .dialog-overlay {
     position: fixed;
     top: 0;
@@ -313,7 +315,7 @@ input[type="checkbox"] {
 
 .dialog-container {
     background: white;
-    width: 420px;
+    width: min(90%, 420px);
     padding: 25px;
     border-radius: 12px;
     box-shadow: 0 4px 30px rgba(0,0,0,0.2);
@@ -389,7 +391,72 @@ input[type="checkbox"] {
     cursor: wait;
 }
 
-.dialog-actions .confirm.refuse:hover {
-    background-color: #f4f4f4;
-    color: black;
+/* =========================
+   Media Queries
+========================= */
+@media (max-width: 1024px) {
+    .t-container {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .bar-chart {
+        grid-column: 1 / -1;
+    }
+
+    .b-container {
+        grid-template-rows: auto 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .top-container {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .refresh-area {
+        justify-self: flex-start;
+    }
+
+    .stats-container {
+        grid-template-rows: auto auto;
+    }
+
+    .t-container {
+        grid-template-columns: 1fr;
+    }
+
+    .counts-container,
+    .pie-chart,
+    .bar-chart {
+        height: auto;
+        padding: 10px;
+    }
+
+    .validation-title {
+        font-size: 0.9em;
+    }
+
+    .principal-container {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-text {
+        font-size: 1em;
+    }
+
+    .icon-btn {
+        width: 28px;
+        height: 28px;
+    }
+
+    .dialog-actions {
+        flex-direction: column;
+    }
+
+    .dialog-actions button {
+        width: 100%;
+    }
 }

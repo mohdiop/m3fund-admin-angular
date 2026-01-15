@@ -326,6 +326,11 @@ i {
         width: 100%;
     }
 
+    .filter {
+        width: 28px;
+        height: 28px;
+    }
+
     .names-email-container {
         display: none;
     }

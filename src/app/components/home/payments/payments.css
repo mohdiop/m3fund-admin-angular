@@ -1,3 +1,6 @@
+/* =========================
+   Global
+========================= */
 .principal-container {
     width: 100%;
     height: 100%;
@@ -9,14 +12,17 @@
 
 i {
     font-size: 24px;
-} 
+}
 
-.top-container{
+/* =========================
+   Top Container / Header
+========================= */
+.top-container {
     width: 100%;
     height: 100%;
     display: grid;
-    box-sizing: border-box;
     grid-template-columns: 80% 20%;
+    box-sizing: border-box;
 }
 
 .dashboard-texts {
@@ -71,11 +77,14 @@ i {
     color: white;
 }
 
+/* =========================
+   Bottom Container
+========================= */
 .bottom-container {
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-rows: calc(5% - 2.5px) (95% - 2.5px);
+    grid-template-rows: calc(5% - 2.5px) calc(95% - 2.5px);
     gap: 5px;
     box-sizing: border-box;
 }
@@ -96,6 +105,9 @@ i {
     gap: 10px;
 }
 
+/* =========================
+   Top Stats / Revenue
+========================= */
 .t-container {
     width: 100%;
     height: 100%;
@@ -124,12 +136,7 @@ i {
 .str-container {
     width: 100%;
     height: 100%;
-    background: linear-gradient(
-        180deg,
-        rgba(230, 184, 0, 1) 0%,
-        rgba(128, 96, 0, 1) 100%
-    );
-    box-sizing: border-box;
+    background: linear-gradient(180deg, rgba(230, 184, 0, 1) 0%, rgba(128, 96, 0, 1) 100%);
     border-radius: 7px;
     color: white;
     display: grid;
@@ -161,6 +168,9 @@ i {
     color: red;
 }
 
+/* =========================
+   Bottom Charts / Campaigns
+========================= */
 .b-container {
     width: 100%;
     height: 100%;
@@ -169,11 +179,14 @@ i {
     gap: 10px;
 }
 
+/* -------------------------
+   Payments Chart
+------------------------- */
 .payments-chart-area {
     width: 100%;
     height: 100%; 
     display: grid;
-    grid-template-rows: calc(15% - 2px) calc(15% - 2px) calc(70% - 2px) ;
+    grid-template-rows: calc(15% - 2px) calc(15% - 2px) calc(70% - 2px);
     padding: 10px;
     gap: 6px;
     box-sizing: border-box;
@@ -184,9 +197,8 @@ i {
 .payments-chart-top {
     width: 100%;
     display: flex;
-    flex-direction: row;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
 }
 
 .payments-chart-title {
@@ -196,7 +208,6 @@ i {
 .payments-type {
     padding: 5px;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    box-sizing: border-box;
     border-radius: 5px;
     font-size: 0.8em;
     color: rgba(0, 0, 0, 0.6);
@@ -204,13 +215,6 @@ i {
 
 .payments-type:focus-within {
     border: 1px solid #2d2d2d;
-}
-
-.payments-chart {
-  width: 100%;
-  height: calc(100vh/4);
-  box-sizing: border-box;
-  padding: 10px;
 }
 
 .payments-chart-center {
@@ -221,13 +225,8 @@ i {
     grid-template-columns: repeat(3, 1fr);
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 10px;
-    box-sizing: border-box;
-    overflow: hidden;
     justify-self: center;
-}
-
-.payments-chart-type:hover {
-    background-color: #d9d9d9;
+    overflow: hidden;
 }
 
 .payments-chart-type {
@@ -247,6 +246,20 @@ i {
     color: white;
 }
 
+.payments-chart-type:hover {
+    background-color: #d9d9d9;
+}
+
+.payments-chart {
+    width: 100%;
+    height: calc(100vh / 4);
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* -------------------------
+   Campaign Cards
+------------------------- */
 .campaigns-container {
     width: 100%;
     height: 100%;
@@ -261,17 +274,13 @@ i {
 
 .ct-container {
     width: 100%;
-    height: fit-content;
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
 }
 
 .cb-container {
     width: 100%;
-    height: 100%;
     display: flex;
-    flex-direction: row;
     overflow-x: auto;
     gap: 10px;
 }
@@ -285,15 +294,12 @@ i {
     grid-template-rows: calc(28% - 5px) calc(28% - 5px) calc(30% - 5px) calc(14% - 5px);
     gap: 2px;
     padding: 10px;
-    box-sizing: border-box;
     border-radius: 10px;
     color: white;
     font-size: 0.8em;
 }
 
 .ccname-container {
-    width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: row;
     gap: 10px;
@@ -301,8 +307,6 @@ i {
 }
 
 .ccproject-container {
-    width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -317,15 +321,98 @@ i {
     height: 32px;
     background-color: #f4f4f4;
     justify-self: end;
-    color: black;
-    border-radius: 5px;
-    align-content: center;
     text-align: center;
-    transition: all 0.25s ease;
+    border-radius: 5px;
     cursor: pointer;
+    transition: all 0.25s ease;
 }
 
 .ccbutton-container:hover {
     background-color: #06A664;
     color: white;
+}
+
+/* =========================
+   Dialog Overlay
+========================= */
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.25);
+    backdrop-filter: blur(3px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.dialog-container {
+    background: white;
+    width: min(90%, 420px);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.2);
+    animation: popup-appear 0.25s ease forwards;
+}
+
+@keyframes popup-appear {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.dialog-title { font-size: 1.3em; font-weight: bold; margin-bottom: 10px; }
+.dialog-text { font-size: 0.8em; margin-bottom: 25px; }
+.dialog-actions { display: flex; justify-content: flex-end; gap: 10px; }
+
+.dialog-actions .cancel {
+    background: #f4f4f4;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.dialog-actions .cancel:hover { background-color: #d9d9d9; }
+
+.dialog-actions .confirm {
+    background: #06A664;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.dialog-actions .confirm.loading {
+    background-color: #f4f4f4;
+    color: black;
+    cursor: wait;
+}
+
+/* =========================
+   Media Queries
+========================= */
+@media (max-width: 1024px) {
+    .t-container { grid-template-columns: 1fr; }
+    .b-container { grid-template-columns: 1fr; grid-template-rows: auto auto; }
+    .campaign-card { height: 150px;}
+}
+
+@media (max-width: 768px) {
+    .top-container { grid-template-columns: 1fr; }
+    .refresh-area { justify-self: start; }
+    .campaign-card { height: 150px;}
+    .principal-container { gap: 20px; }
+}
+
+@media (max-width: 480px) {
+    .dashboard-text { font-size: 1em; }
+    .ccbutton-container { width: 80px; font-size: 0.75em; }
+    .campaign-card { height: 150px;}
+    .campaigns-container {grid-template-rows: calc(20% - 2.5px) calc(80% - 2.5px);}
 }

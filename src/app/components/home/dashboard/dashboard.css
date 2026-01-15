@@ -395,6 +395,10 @@ html, body {
     .payments-chart-center {
         width: 100%;
     }
+
+    .principal-container {
+        gap: 20px;
+    }
 }
 
 /* PETIT MOBILE */
