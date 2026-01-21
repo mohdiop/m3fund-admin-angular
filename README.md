@@ -1,59 +1,40 @@
-# M3fundAdminAngular
+# M3Fund – Interface d’administration
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.2.
+**M3Fund Admin** est l’interface d’**administration centrale** de la plateforme de financement participatif **M3Fund**, dédiée au Mali.
 
-## Development server
+🔗 **Accès interface admin** : https://m3fund-admin.web.app/
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
-```
+## 🎯 Objectif du projet
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Cette application permet aux administrateurs de :
+- **Valider, refuser et modérer** les projets soumis par les porteurs
+- Gérer les **utilisateurs** (porteurs, contributeurs)
+- Vérifier les **documents KYC**
+- Superviser les **transactions financières**
+- Assurer la **sécurité, la transparence et la conformité** de la plateforme
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🧩 Écosystème M3Fund
 
-```bash
-ng generate component component-name
-```
+M3Fund repose sur **trois applications complémentaires** :
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+1. **Web – Porteur de projet**  
+   - Création et gestion des campagnes  
+   - Suivi des contributions  
 
-```bash
-ng generate --help
-```
+2. **Web – Administration (ce projet)**  
+   - Modération, validation et contrôle  
+   - Supervision globale de la plateforme  
 
-## Building
+3. **Mobile – Contributeur**  
+   - Découverte des projets  
+   - Dons, investissements et bénévolat  
 
-To build the project run:
+---
 
-```bash
-ng build
-```
+## 🛡️ Rôle clé
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+> L’interface Admin garantit la fiabilité des projets, la protection des utilisateurs et le bon fonctionnement de l’écosystème M3Fund.
